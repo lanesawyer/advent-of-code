@@ -10,5 +10,3 @@ To run the project:
 - Navigate to `rust-2020/`
 - `cargo run` will run a CLI program that outputs info for each of the challenges
 - `cargo test` will run all the unit tests
-
-This will output 
