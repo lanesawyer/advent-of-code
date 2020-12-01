@@ -19,8 +19,7 @@ impl Day for Day1 {
         for n in &numbers {
             let to_find = 2020 - n;
             if numbers.contains(&to_find) {
-                let answer = n * to_find;
-                return Some(answer);
+                return Some(to_find * n);
             }
         }
         None
@@ -56,7 +55,7 @@ fn parse_input<T: FromStr>(input: &str) -> Vec<T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{Day, Day1};
+    use crate::*;
 
     #[test]
     fn day1_part1_works() {
