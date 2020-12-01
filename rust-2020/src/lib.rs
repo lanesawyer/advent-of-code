@@ -6,6 +6,7 @@ pub trait Day {
     fn part_1(day: &str) -> Option<Answer>;
     fn part_2(day: &str) -> Option<Answer>;
 }
+
 pub struct Day1;
 
 impl Day for Day1 {
@@ -16,7 +17,7 @@ impl Day for Day1 {
         // and search all the other numbers in the list
         // for something that adds up to 2020
         for n in &numbers {
-            let to_find = 2020 - *n;
+            let to_find = 2020 - n;
             if numbers.contains(&to_find) {
                 let answer = n * to_find;
                 return Some(answer);
