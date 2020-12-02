@@ -68,13 +68,8 @@ impl Day for Day2 {
         // 4. Return how many were valid
         let num_valid_passwords = input
             .split('\n')
-            .map(parse_passwords)
-            .filter(|rule| {
-                let char_occurances = rule.password.matches(rule.character).count();
-
-                // first is lower and second is upper bounds
-                char_occurances >= rule.first_number && char_occurances <= rule.second_number
-            })
+            .map(PasswordRule::parse)
+            .filter(PasswordRule::is_valid_part1)
             .count();
 
         Some(num_valid_passwords as u32)
@@ -88,14 +83,8 @@ impl Day for Day2 {
         // 4. Return valid if one and only one of the positions has the character
         let num_valid_passwords = input
             .split('\n')
-            .map(parse_passwords)
-            .filter(|rule| {
-                let first_position = rule.password.chars().nth(rule.first_number - 1).unwrap();
-                let second_position = rule.password.chars().nth(rule.second_number - 1).unwrap();
-
-                (first_position == rule.character && second_position != rule.character)
-                    || (second_position == rule.character && first_position != rule.character)
-            })
+            .map(PasswordRule::parse)
+            .filter(PasswordRule::is_valid_part2)
             .count();
 
         Some(num_valid_passwords as u32)
@@ -119,39 +108,54 @@ impl PasswordRule {
             password
         }
     }
-}
 
-fn parse_passwords(line: &str) -> PasswordRule {
-    let line = line.trim();
+    fn parse(line: &str) -> PasswordRule {
+        let line = line.trim();
 
-    let mut chars = line.chars();
+        let mut chars = line.chars();
+    
+        let lower_check = chars.next().unwrap().to_digit(10).unwrap();
+        // Could be the second digit or a -
+        let lower_check =
+            if let Some(lower_check_second_digit) = chars.next().unwrap().to_digit(10).or(None) {
+                chars.next(); // Process the -
+                lower_check * 10 + lower_check_second_digit
+            } else {
+                lower_check
+            };
+    
+        let upper_check = chars.next().unwrap().to_digit(10).unwrap();
+        // Could be the second digit or a space
+        let upper_check =
+            if let Some(upper_check_second_digit) = chars.next().unwrap().to_digit(10).or(None) {
+                chars.next(); // Process the space
+                upper_check * 10 + upper_check_second_digit
+            } else {
+                upper_check
+            };
+    
+        let char_check = chars.next().unwrap();
+        chars.next(); // : character
+        chars.next(); // space character
+    
+        let password = chars.collect::<String>();
+        PasswordRule::new(lower_check, upper_check, char_check, password)
+    }
 
-    let lower_check = chars.next().unwrap().to_digit(10).unwrap();
-    // Could be the second digit or a -
-    let lower_check =
-        if let Some(lower_check_second_digit) = chars.next().unwrap().to_digit(10).or(None) {
-            chars.next(); // Process the -
-            lower_check * 10 + lower_check_second_digit
-        } else {
-            lower_check
-        };
+    fn is_valid_part1(rule: &PasswordRule) -> bool {
+        let char_occurances = rule.password.matches(rule.character).count();
 
-    let upper_check = chars.next().unwrap().to_digit(10).unwrap();
-    // Could be the second digit or a space
-    let upper_check =
-        if let Some(upper_check_second_digit) = chars.next().unwrap().to_digit(10).or(None) {
-            chars.next(); // Process the space
-            upper_check * 10 + upper_check_second_digit
-        } else {
-            upper_check
-        };
+        // first is lower and second is upper bounds
+        char_occurances >= rule.first_number && char_occurances <= rule.second_number
+    }
 
-    let char_check = chars.next().unwrap();
-    chars.next(); // : character
-    chars.next(); // space character
+    fn is_valid_part2(rule: &PasswordRule) -> bool {
+        let first_position = rule.password.chars().nth(rule.first_number - 1).unwrap();
+        let second_position = rule.password.chars().nth(rule.second_number - 1).unwrap();
 
-    let password = chars.collect::<String>();
-    PasswordRule::new(lower_check, upper_check, char_check, password)
+        (first_position == rule.character && second_position != rule.character)
+            || (second_position == rule.character && first_position != rule.character)
+    }
 }
 
 fn parse_input<T: FromStr + Eq + Hash>(input: &str) -> HashSet<T> {
