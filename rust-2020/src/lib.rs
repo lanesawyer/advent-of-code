@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-pub type Answer = i32;
+pub type Answer = u32;
 
 pub trait Day {
     fn part_1(day: &str) -> Option<Answer>;
@@ -11,22 +11,33 @@ pub struct Day1;
 
 impl Day for Day1 {
     fn part_1(input: &str) -> Option<Answer> {
-        let numbers = parse_input::<i32>(input);
+        let numbers = parse_input::<u32>(input);
 
         // Approach: Go through each number in the list
         // and search all the other numbers in the list
         // for something that adds up to 2020
-        for n in &numbers {
-            let to_find = 2020 - n;
-            if numbers.contains(&to_find) {
-                return Some(to_find * n);
-            }
-        }
-        None
+
+        // First Attempt
+        // for n in &numbers {
+        //     let to_find = 2020 - n;
+        //     if numbers.contains(&to_find) {
+        //         return Some(to_find * n);
+        //     }
+        // }
+
+        // Iterators!
+        numbers.iter()
+            .find_map(|num| {
+                let to_find = 2020 - num;
+                match numbers.contains(&to_find) {
+                    true => Some(to_find * num),
+                    false => None
+                }
+            })
     }
 
     fn part_2(input: &str) -> Option<Answer> {
-        let numbers = parse_input::<i32>(input);
+        let numbers = parse_input::<u32>(input);
 
         // Approach: For each pair of numbers in the list
         // search all the other numbers in the list
