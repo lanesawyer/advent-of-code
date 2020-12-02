@@ -1,4 +1,4 @@
-use rust_2020::{Day, Day1};
+use rust_2020::{Day, Day1, Day2};
 
 mod lib;
 
@@ -9,8 +9,19 @@ fn main() {
         Some(answer) => println!("  Part 1: {}", answer),
         None => println!("  Part 1: Not found"),
     }
-    
+
     match Day1::part_2(&day1) {
+        Some(answer) => println!("  Part 2: {}", answer),
+        None => println!("  Part 2: Not found"),
+    }
+
+    let day2 = read_input(2);
+    match Day2::part_1(&day2) {
+        Some(answer) => println!("  Part 1: {}", answer),
+        None => println!("  Part 1: Not found"),
+    }
+
+    match Day2::part_2(&day2) {
         Some(answer) => println!("  Part 2: {}", answer),
         None => println!("  Part 2: Not found"),
     }
@@ -18,6 +29,8 @@ fn main() {
 
 fn read_input(day: u8) -> String {
     println!("Day {}", day);
-    std::fs::read_to_string(format!("./input/day{}.txt", day))
-        .expect(&format!("Something went wrong reading the file for day {}", day))
+    std::fs::read_to_string(format!("./input/day{}.txt", day)).expect(&format!(
+        "Something went wrong reading the file for day {}",
+        day
+    ))
 }
