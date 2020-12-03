@@ -1,5 +1,5 @@
 use super::Answer;
-use crate::Day;
+use crate::{AdventError, Day};
 
 pub struct Day2;
 
@@ -13,6 +13,7 @@ impl Day for Day2 {
         let num_valid_passwords = input
             .split('\n')
             .map(PasswordRule::parse_improved)
+            .map(Result::unwrap)
             .filter(PasswordRule::is_valid_part1)
             .count();
 
@@ -28,6 +29,7 @@ impl Day for Day2 {
         let num_valid_passwords = input
             .split('\n')
             .map(PasswordRule::parse_improved)
+            .map(Result::unwrap)
             .filter(PasswordRule::is_valid_part2)
             .count();
 
@@ -86,21 +88,26 @@ impl PasswordRule {
         PasswordRule::new(lower_check, upper_check, char_check, password)
     }
 
-    fn parse_improved(line: &str) -> PasswordRule {
+    fn parse_improved(line: &str) -> Result<PasswordRule, AdventError> {
         // [1-5, h:, mwahaha]
         let pieces = line.trim().split(' ').collect::<Vec<_>>();
 
         // [1, 5]
         let range_pieces = pieces[0].split('-').collect::<Vec<_>>();
-        let first_number = range_pieces[0].parse::<u32>().unwrap();
-        let second_number = range_pieces[1].parse::<u32>().unwrap();
+        let first_number = range_pieces[0].parse::<u32>()?;
+        let second_number = range_pieces[1].parse::<u32>()?;
 
         // h:
         let character = pieces[1].chars().next().unwrap();
 
         // mwahaha
         let password = pieces[2].to_string();
-        PasswordRule::new(first_number, second_number, character, password)
+        Ok(PasswordRule::new(
+            first_number,
+            second_number,
+            character,
+            password,
+        ))
     }
 
     fn is_valid_part1(rule: &PasswordRule) -> bool {
