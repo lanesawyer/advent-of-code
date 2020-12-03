@@ -12,7 +12,7 @@ impl Day for Day2 {
         // 4. Return how many were valid
         let num_valid_passwords = input
             .split('\n')
-            .map(PasswordRule::parse)
+            .map(PasswordRule::parse_improved)
             .filter(PasswordRule::is_valid_part1)
             .count();
 
@@ -27,7 +27,7 @@ impl Day for Day2 {
         // 4. Return valid if one and only one of the positions has the character
         let num_valid_passwords = input
             .split('\n')
-            .map(PasswordRule::parse)
+            .map(PasswordRule::parse_improved)
             .filter(PasswordRule::is_valid_part2)
             .count();
 
@@ -53,7 +53,7 @@ impl PasswordRule {
         }
     }
 
-    fn parse(line: &str) -> PasswordRule {
+    fn _parse(line: &str) -> PasswordRule {
         let line = line.trim();
 
         let mut chars = line.chars();
@@ -86,6 +86,23 @@ impl PasswordRule {
         PasswordRule::new(lower_check, upper_check, char_check, password)
     }
 
+    fn parse_improved(line: &str) -> PasswordRule {
+        // [1-5, h:, mwahaha]
+        let pieces = line.trim().split(' ').collect::<Vec<_>>();
+
+        // [1, 5]
+        let range_pieces = pieces[0].split('-').collect::<Vec<_>>();
+        let first_number = range_pieces[0].parse::<u32>().unwrap();
+        let second_number = range_pieces[1].parse::<u32>().unwrap();
+
+        // h:
+        let character = pieces[1].chars().next().unwrap();
+
+        // mwahaha
+        let password = pieces[2].to_string();
+        PasswordRule::new(first_number, second_number, character, password)
+    }
+
     fn is_valid_part1(rule: &PasswordRule) -> bool {
         let char_occurances = rule.password.matches(rule.character).count();
 
@@ -104,8 +121,8 @@ impl PasswordRule {
 
 #[cfg(test)]
 mod tests {
-    use crate::Day;
     use super::Day2;
+    use crate::Day;
 
     #[test]
     fn part1_works() {

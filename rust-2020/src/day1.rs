@@ -62,8 +62,8 @@ fn parse_input<T: FromStr + Eq + Hash>(input: &str) -> HashSet<T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::Day;
     use super::Day1;
+    use crate::Day;
 
     #[test]
     fn part1_works() {
