@@ -16,7 +16,7 @@ impl Day for Day3 {
             .split('\n')
             .filter(|s| s.len() != 0)
             .enumerate()
-            .map(tree_finder)
+            .filter_map(tree_finder)
             .sum();
 
         Some(number_of_trees_hit)
@@ -40,7 +40,7 @@ impl Day for Day3 {
                     .split('\n')
                     .filter(|s| s.trim().len() != 0)
                     .enumerate()
-                    .map(count_trees)
+                    .filter_map(count_trees)
                     .sum::<u64>()
             })
             .fold(1, |acc, trees| {
@@ -55,8 +55,8 @@ impl Day for Day3 {
     }
 }
 
-fn make_tree_finder(right_slope: usize, down_slope: usize) -> impl Fn((usize, &str)) -> u64 {
-    move |(index, line)| -> u64 {
+fn make_tree_finder(right_slope: usize, down_slope: usize) -> impl Fn((usize, &str)) -> Option<u64> {
+    move |(index, line)| -> Option<u64> {
         // Only even attempt to add trees if we're on a line that
         // is on the down slop, which happens when the index evenly divides
         if index % down_slope == 0 {
@@ -64,12 +64,12 @@ fn make_tree_finder(right_slope: usize, down_slope: usize) -> impl Fn((usize, &s
             // the row we're on times the right slope to find the rightward movement
             // but then we mod it by the line's length to get the wrapping behavior
             // so the pattern "repeats"
-            match line.trim().chars().nth(index * right_slope % line.len()) {
-                Some(TREE_CHAR) => 1,
-                _ => 0,
+            match line.trim().chars().nth((index * right_slope) % line.len()) {
+                Some(TREE_CHAR) => Some(1),
+                _ => None,
             }
         } else {
-            0
+            None
         }
     }
 }
@@ -109,7 +109,7 @@ mod tests {
             #.##...#...
             #...##....#
             .#..#...#.#"#;
-        // not sure how many
-        assert_eq!(Day3::part_2(test_input), Some(1));
+        // why doesn't this work
+        assert_eq!(Day3::part_2(test_input), Some(336));
     }
 }
