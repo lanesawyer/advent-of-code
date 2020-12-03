@@ -7,7 +7,7 @@ pub struct Day1;
 
 impl Day for Day1 {
     fn part_1(input: &str) -> Option<Answer> {
-        let numbers = parse_input::<u32>(input);
+        let numbers = parse_input::<u64>(input);
 
         // Approach: Go through each number in the list
         // and search all the other numbers in the list
@@ -32,7 +32,7 @@ impl Day for Day1 {
     }
 
     fn part_2(input: &str) -> Option<Answer> {
-        let numbers = parse_input::<u32>(input);
+        let numbers = parse_input::<u64>(input);
 
         // Approach: For each pair of numbers in the list
         // search all the other numbers in the list

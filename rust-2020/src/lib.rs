@@ -1,6 +1,6 @@
 use std::num::ParseIntError;
 
-pub type Answer = u32;
+pub type Answer = u64;
 
 pub trait Day {
     fn part_1(day: &str) -> Option<Answer>;
@@ -27,3 +27,4 @@ impl From<std::io::Error> for AdventError {
 
 pub mod day1;
 pub mod day2;
+pub mod day3;

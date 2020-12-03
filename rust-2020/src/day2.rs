@@ -17,7 +17,7 @@ impl Day for Day2 {
             .filter(PasswordRule::is_valid_part1)
             .count();
 
-        Some(num_valid_passwords as u32)
+        Some(num_valid_passwords as u64)
     }
 
     fn part_2(input: &str) -> Option<Answer> {
@@ -33,7 +33,7 @@ impl Day for Day2 {
             .filter(PasswordRule::is_valid_part2)
             .count();
 
-        Some(num_valid_passwords as u32)
+        Some(num_valid_passwords as u64)
     }
 }
 
