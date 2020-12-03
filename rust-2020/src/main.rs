@@ -1,6 +1,4 @@
-use rust_2020::{Day, Day1, Day2};
-
-mod lib;
+use rust_2020::{day1::Day1, day2::Day2, Day};
 
 fn main() {
     println!("==== Advent of Code 2020 ====");
