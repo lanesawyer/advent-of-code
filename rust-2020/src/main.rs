@@ -1,4 +1,4 @@
-use rust_2020::{day1::Day1, day2::Day2, day3::Day3, AdventError, Day};
+use rust_2020::{day1::Day1, day2::Day2, day3::Day3, day4::Day4, AdventError, Day};
 
 fn main() -> Result<(), AdventError> {
     println!("==== Advent of Code 2020 ====");
@@ -33,6 +33,15 @@ fn main() -> Result<(), AdventError> {
         None => println!("  Part 2: Not found"),
     }
 
+    let day4 = read_input(4)?;
+    match Day4::part_1(&day4) {
+        Some(answer) => println!("  Part 1: {}", answer),
+        None => println!("  Part 1: Not found"),
+    }
+    match Day4::part_2(&day4) {
+        Some(answer) => println!("  Part 2: {}", answer),
+        None => println!("  Part 2: Not found"),
+    }
     Ok(())
 }
 
