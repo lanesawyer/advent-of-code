@@ -5,6 +5,7 @@ authors = ["Lane Sawyer <github@lanesawyer.dev>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [lib]
 name = "rust_2020"
 path = "src/lib.rs"
