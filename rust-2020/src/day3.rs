@@ -71,7 +71,8 @@ mod tests {
 
     #[test]
     fn part1_works() {
-        let test_input = r#"..##.......
+        let test_input = "
+            ..##.......
             #...#...#..
             .#....#..#.
             ..#.#...#.#
@@ -81,14 +82,16 @@ mod tests {
             .#........#
             #.##...#...
             #...##....#
-            .#..#...#.#"#;
+            .#..#...#.#
+        ";
         // why doesn't this work
         assert_eq!(Day3::part_1(test_input), Some(7));
     }
 
     #[test]
     fn part2_works() {
-        let test_input = r#"..##.......
+        let test_input = "
+            ..##.......
             #...#...#..
             .#....#..#.
             ..#.#...#.#
@@ -98,7 +101,8 @@ mod tests {
             .#........#
             #.##...#...
             #...##....#
-            .#..#...#.#"#;
+            .#..#...#.#
+        ";
         // why doesn't this work
         assert_eq!(Day3::part_2(test_input), Some(336));
     }
