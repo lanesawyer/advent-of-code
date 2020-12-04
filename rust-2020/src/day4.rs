@@ -5,35 +5,41 @@ pub struct Day4;
 
 impl Day for Day4 {
     fn part_1(input: &str) -> Option<Answer> {
-        let mut num_passports = 0;
+        Some(count_passports(input, false))
+    }
 
-        let mut iterator = input.split('\n');
-        while let Some(line) = iterator.next() {
-            println!("processing line {}", line);
-            let mut passport = Passport::new(line);
+    fn part_2(input: &str) -> Option<Answer> {
+        Some(count_passports(input, true))
+    }
+}
 
-            while let Some(next_line) = iterator.next() {
-                println!("processing further lines {}", next_line);
-                if !next_line.trim().is_empty() {
-                    passport.parse_line(next_line);
-                } else {
-                    break;
-                }
-            }
+fn count_passports(input: &str, strict_validation: bool) -> Answer {
+    let mut num_passports = 0;
 
-            println!("{:?}", passport);
+    let mut iterator = input.split('\n');
+    while let Some(line) = iterator.next() {
+        let mut passport = Passport::new(line);
 
-            if passport.is_valid() {
-                num_passports += 1
+        while let Some(next_line) = iterator.next() {
+            if !next_line.trim().is_empty() {
+                passport.parse_line(next_line);
+            } else {
+                break;
             }
         }
 
-        Some(num_passports)
+        let is_valid = if strict_validation {
+            passport.is_valid_strict()
+        } else {
+            passport.is_valid()
+        };
+
+        if is_valid {
+            num_passports += 1
+        }
     }
 
-    fn part_2(_input: &str) -> Option<Answer> {
-        todo!()
-    }
+    num_passports
 }
 
 #[derive(Default, Debug)]
@@ -78,20 +84,79 @@ impl Passport {
     }
 
     fn is_valid(&self) -> bool {
-        let fields = [self.byr, self.iyr, self.eyr];
-        let other_fields = [
+        let num_fields = [self.byr, self.iyr, self.eyr];
+        let string_fields = [
             self.hgt.as_ref(),
             self.hcl.as_ref(),
             self.ecl.as_ref(),
             self.pid.as_ref(),
         ];
 
-        let u32s_good = fields.iter().all(|field| field.is_some());
-        let strings_good = other_fields.iter().all(|field| field.is_some());
-
-        println!("{} && {}", u32s_good, strings_good);
+        let u32s_good = num_fields.iter().all(|field| field.is_some());
+        let strings_good = string_fields.iter().all(|field| field.is_some());
 
         u32s_good && strings_good
+    }
+
+    fn is_valid_strict(&self) -> bool {
+        let byr_valid = match self.byr {
+            Some(year) => year >= 1920 && year <= 2002,
+            None => false,
+        };
+
+        let iyr_valid = match self.iyr {
+            Some(year) => year >= 2010 && year <= 2020,
+            None => false,
+        };
+
+        let eyr_valid = match self.eyr {
+            Some(year) => year >= 2020 && year <= 2030,
+            None => false,
+        };
+
+        let hgt_valid = match &self.hgt {
+            Some(height) => {
+                let value = &height[..height.len() - 2];
+
+                if height.ends_with("cm") {
+                    let number = value.parse::<u32>().unwrap_or(0);
+                    number >= 150 && number <= 193
+                } else if height.ends_with("in") {
+                    let value = &height[..height.len() - 2];
+                    let number = value.parse::<u32>().unwrap_or(0);
+                    number >= 59 && number <= 76
+                } else {
+                    false
+                }
+            }
+            None => false,
+        };
+
+        let hcl_valid = match &self.hcl {
+            Some(hcl) => hcl.starts_with('#') && hcl.len() == 7,
+            None => false,
+        };
+
+        let valid_ecls: Vec<String> = vec![
+            "amb".into(),
+            "blu".into(),
+            "brn".into(),
+            "gry".into(),
+            "grn".into(),
+            "hzl".into(),
+            "oth".into(),
+        ];
+        let ecl_valid = match &self.ecl {
+            Some(ecl) => valid_ecls.contains(&ecl),
+            None => false,
+        };
+
+        let pid_valid = match &self.pid {
+            Some(pid) => pid.len() == 9 && pid.parse::<u32>().is_ok(),
+            None => false,
+        };
+
+        byr_valid && iyr_valid && eyr_valid && hgt_valid && hcl_valid && ecl_valid & pid_valid
     }
 }
 
@@ -121,22 +186,41 @@ mod tests {
     }
 
     #[test]
-    fn part2_works() {
+    fn part2_invalid_passports_works() {
         let test_input = "
-            ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
-            byr:1937 iyr:2017 cid:147 hgt:183cm
+            eyr:1972 cid:100
+            hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
             
-            iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
-            hcl:#cfa07d byr:1929
+            iyr:2019
+            hcl:#602927 eyr:1967 hgt:170cm
+            ecl:grn pid:012533040 byr:1946
             
-            hcl:#ae17e1 iyr:2013
-            eyr:2024
-            ecl:brn pid:760753108 byr:1931
-            hgt:179cm
+            hcl:dab227 iyr:2012
+            ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277
             
-            hcl:#cfa07d eyr:2025 pid:166559648
-            iyr:2011 ecl:brn hgt:59in
+            hgt:59cm ecl:zzz
+            eyr:2038 hcl:74454a iyr:2023
+            pid:3556412378 byr:2007
         ";
-        assert_eq!(Day4::part_2(test_input), Some(2));
+        assert_eq!(Day4::part_2(test_input), Some(0));
+    }
+
+    #[test]
+    fn part2_valid_passports_works() {
+        let test_input = "
+            pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
+            hcl:#623a2f
+            
+            eyr:2029 ecl:blu cid:129 byr:1989
+            iyr:2014 pid:896056539 hcl:#a97842 hgt:165cm
+            
+            hcl:#888785
+            hgt:164cm byr:2001 iyr:2015 cid:88
+            pid:545766238 ecl:hzl
+            eyr:2022
+            
+            iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
+        ";
+        assert_eq!(Day4::part_2(test_input), Some(4));
     }
 }
