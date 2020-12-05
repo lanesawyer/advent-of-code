@@ -64,46 +64,48 @@ fn make_tree_finder(right_slope: usize) -> impl Fn((usize, &str)) -> Option<u64>
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::Day3;
-//     use crate::Day;
+#[cfg(test)]
+mod tests {
+    use super::Day3;
+    use crate::Day;
 
-//     #[test]
-//     fn part1_works() {
-//         let test_input = "
-//             ..##.......
-//             #...#...#..
-//             .#....#..#.
-//             ..#.#...#.#
-//             .#...##..#.
-//             ..#.##.....
-//             .#.#.#....#
-//             .#........#
-//             #.##...#...
-//             #...##....#
-//             .#..#...#.#
-//         ";
-//         // why doesn't this work
-//         assert_eq!(Day3::part_1(test_input), Some(7));
-//     }
+    #[test]
+    #[ignore = "Don't know why it's broken"]
+    fn part1_works() {
+        let test_input = "
+            ..##.......
+            #...#...#..
+            .#....#..#.
+            ..#.#...#.#
+            .#...##..#.
+            ..#.##.....
+            .#.#.#....#
+            .#........#
+            #.##...#...
+            #...##....#
+            .#..#...#.#
+        ";
+        // why doesn't this work
+        assert_eq!(Day3::part_1(test_input), Some(7));
+    }
 
-//     #[test]
-//     fn part2_works() {
-//         let test_input = "
-//             ..##.......
-//             #...#...#..
-//             .#....#..#.
-//             ..#.#...#.#
-//             .#...##..#.
-//             ..#.##.....
-//             .#.#.#....#
-//             .#........#
-//             #.##...#...
-//             #...##....#
-//             .#..#...#.#
-//         ";
-//         // why doesn't this work
-//         assert_eq!(Day3::part_2(test_input), Some(336));
-//     }
-// }
+    #[test]
+    #[ignore = "Don't know why it's broken"]
+    fn part2_works() {
+        let test_input = "
+            ..##.......
+            #...#...#..
+            .#....#..#.
+            ..#.#...#.#
+            .#...##..#.
+            ..#.##.....
+            .#.#.#....#
+            .#........#
+            #.##...#...
+            #...##....#
+            .#..#...#.#
+        ";
+        // why doesn't this work
+        assert_eq!(Day3::part_2(test_input), Some(336));
+    }
+}

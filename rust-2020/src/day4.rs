@@ -122,7 +122,6 @@ impl Passport {
                     let number = value.parse::<u32>().unwrap_or(0);
                     number >= 150 && number <= 193
                 } else if height.ends_with("in") {
-                    let value = &height[..height.len() - 2];
                     let number = value.parse::<u32>().unwrap_or(0);
                     number >= 59 && number <= 76
                 } else {
@@ -133,21 +132,25 @@ impl Passport {
         };
 
         let hcl_valid = match &self.hcl {
-            Some(hcl) => hcl.starts_with('#') && hcl.len() == 7,
+            Some(hcl) => {
+                hcl.starts_with('#')
+                    && hcl.len() == 7
+                    && hcl.chars().skip(1).all(|c| c.is_ascii_hexdigit())
+            }
             None => false,
         };
 
-        let valid_ecls: Vec<String> = vec![
-            "amb".into(),
-            "blu".into(),
-            "brn".into(),
-            "gry".into(),
-            "grn".into(),
-            "hzl".into(),
-            "oth".into(),
+        let valid_ecls = [
+            "amb",
+            "blu",
+            "brn",
+            "gry",
+            "grn",
+            "hzl",
+            "oth",
         ];
         let ecl_valid = match &self.ecl {
-            Some(ecl) => valid_ecls.contains(&ecl),
+            Some(ecl) => valid_ecls.contains(&&ecl[..]),
             None => false,
         };
 
