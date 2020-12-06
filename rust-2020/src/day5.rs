@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use super::Answer;
 use crate::Day;
 
@@ -9,17 +11,15 @@ impl Day for Day5 {
     }
 
     fn part_2(input: &str) -> Option<Answer> {
-        let mut seats = input
+        let seats = input
             .split_whitespace()
             .map(calculate_seat_number)
-            .collect::<Vec<u64>>();
-        seats.sort_unstable();
+            .collect::<HashSet<u64>>();
+            
+        let min = *seats.iter().min()?;
+        let max = *seats.iter().max()?;
 
-        let (my_seat, _) = (seats[0]..=seats[seats.len() - 1] as u64)
-            .zip(seats)
-            .find(|(expected, seat)| expected != seat)?;
-
-        Some(my_seat)
+        (min..=max).find(|expected| !seats.contains(expected))
     }
 }
 
