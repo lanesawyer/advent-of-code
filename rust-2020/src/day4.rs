@@ -42,6 +42,28 @@ fn count_passports(input: &str, strict_validation: bool) -> Answer {
     num_passports
 }
 
+fn _count_passports_better(input: &str, strict_validation: bool) -> Answer {
+    println!(
+        "this {:?},",
+        input.trim().split("\n\n").collect::<Vec<&str>>()
+    );
+    input
+        .trim()
+        .split("\n\n")
+        .map(|line| {
+            print!("line {},", line);
+            Passport::new(line)
+        })
+        .filter(|p| {
+            if strict_validation {
+                p.is_valid_strict()
+            } else {
+                p.is_valid()
+            }
+        })
+        .count() as u64
+}
+
 #[derive(Default, Debug)]
 struct Passport {
     pub byr: Option<u32>,    // (Birth Year)
@@ -140,15 +162,7 @@ impl Passport {
             None => false,
         };
 
-        let valid_ecls = [
-            "amb",
-            "blu",
-            "brn",
-            "gry",
-            "grn",
-            "hzl",
-            "oth",
-        ];
+        let valid_ecls = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
         let ecl_valid = match &self.ecl {
             Some(ecl) => valid_ecls.contains(&&ecl[..]),
             None => false,

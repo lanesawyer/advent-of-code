@@ -5,67 +5,38 @@ pub struct Day5;
 
 impl Day for Day5 {
     fn part_1(input: &str) -> Option<Answer> {
-        // Future me, make some closure functions to reduce duplication
-        let max =  input.split_whitespace()
-            .map(|line| {
-                let (row, _) = &line[..7].chars()
-                    .fold((0, 127), |(start, end), next| {
-                        let halfway = (start + end) / 2;
-                        match next {
-                            'F' => (start, halfway),
-                            'B' => (halfway + 1, end),
-                            _ => { unreachable!( )}
-                        }
-                    });
-                let (column, _) = &line[7..].chars()
-                    .fold((0, 7), |(start, end), next| {
-                        let halfway = (start + end) / 2;
-                        match next {
-                            'L' => (start, halfway),
-                            'R' => (halfway + 1, end),
-                            _ => unreachable!(),
-                        }
-                    });
-
-                let ans: u64 = (row * 8) + column;
-                ans
-            })
-            .max().unwrap();
-        Some(max)
+        input.split_whitespace().map(calculate_seat_number).max()
     }
 
     fn part_2(input: &str) -> Option<Answer> {
-        let mut seats =  input.split_whitespace()
-            .map(|line| {
-                let (row, _) = &line[..7].chars()
-                    .fold((0, 127), |(start, end), next| {
-                        let halfway = (start + end) / 2;
-                        match next {
-                            'F' => (start, halfway),
-                            'B' => (halfway + 1, end),
-                            _ => { unreachable!( )}
-                        }
-                    });
-                let (column, _) = &line[7..].chars()
-                    .fold((0, 7), |(start, end), next| {
-                        let halfway = (start + end) / 2;
-                        match next {
-                            'L' => (start, halfway),
-                            'R' => (halfway + 1, end),
-                            _ => unreachable!(),
-                        }
-                    });
+        let mut seats = input
+            .split_whitespace()
+            .map(calculate_seat_number)
+            .collect::<Vec<u64>>();
+        seats.sort_unstable();
 
-                let ans: u64 = (row * 8) + column;
-                ans
-            }).collect::<Vec<u64>>();
-            seats.sort();
+        let (my_seat, _) = (seats[0]..=seats[seats.len() - 1] as u64)
+            .zip(seats)
+            .find(|(expected, seat)| expected != seat)?;
 
-            let my_seat = (seats[0]..=seats[seats.len() - 1] as u64)
-                .zip(seats)
-                .find(|(expected, seat)| expected != seat);
-            
-        Some(my_seat.unwrap().0)
+        Some(my_seat)
+    }
+}
+
+fn calculate_seat_number(line: &str) -> u64 {
+    let (row, _) = &line[..7].chars().fold((0, 127), calculate_next_range);
+    let (column, _) = &line[7..].chars().fold((0, 7), calculate_next_range);
+
+    let ans: u64 = (row * 8) + column;
+    ans
+}
+
+fn calculate_next_range((start, end): (u64, u64), next: char) -> (u64, u64) {
+    let halfway = (start + end) / 2;
+    match next {
+        'F' | 'L' => (start, halfway),
+        'B' | 'R' => (halfway + 1, end),
+        _ => unreachable!(),
     }
 }
 
