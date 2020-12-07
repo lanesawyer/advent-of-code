@@ -15,7 +15,7 @@ impl Day for Day5 {
             .split_whitespace()
             .map(calculate_seat_number)
             .collect::<HashSet<u64>>();
-            
+
         let min = *seats.iter().min()?;
         let max = *seats.iter().max()?;
 
