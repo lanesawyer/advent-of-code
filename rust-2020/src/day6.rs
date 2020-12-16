@@ -1,4 +1,4 @@
-use std::{collections::HashSet};
+use std::collections::HashSet;
 
 use super::Answer;
 use crate::Day;
@@ -9,12 +9,14 @@ impl Day for Day6 {
     fn part_1(input: &str) -> Option<Answer> {
         let num_questions_answered = input
             .split("\n\n")
-            .map(|group| { 
-                group.chars()
+            .map(|group| {
+                group
+                    .chars()
                     .filter(|c| c.is_alphabetic())
                     .collect::<HashSet<char>>()
                     .len()
-            }).sum::<usize>();
+            })
+            .sum::<usize>();
 
         Some(num_questions_answered as u64)
     }
@@ -22,17 +24,19 @@ impl Day for Day6 {
     fn part_2(input: &str) -> Option<Answer> {
         let something = input
             .split("\n\n")
-            .map(|group| { 
-                let chars_per_person = group.split("\n")
+            .map(|group| {
+                let chars_per_person = group
+                    .split("\n")
                     .map(|person| person.chars().collect::<HashSet<char>>());
-                    //.collect::<HashSet<char>>()
-                    
-                    //.len();
+                //.collect::<HashSet<char>>()
+
+                //.len();
                 // add up all the characters seen between all people
                 // return the ones that have the number of people in the group
                 //chars_per_person
                 1
-            }).sum::<usize>();
+            })
+            .sum::<usize>();
 
         Some(something as u64)
     }
