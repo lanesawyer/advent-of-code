@@ -5,39 +5,38 @@ pub struct Day2;
 
 impl Day for Day2 {
     fn part_1(input: &str) -> Option<Answer> {
-        let answer: (u64, u64) = input
-            .lines()
-            .fold((0, 0), |acc, line| -> (u64, u64) {
-                let split_line: Vec<&str> = line.split_whitespace().collect();
-                let direction = split_line.first().unwrap();
-                let amount = split_line.get(1).unwrap().parse::<u64>().unwrap();
+        let answer: (u64, u64) = input.lines().fold((0, 0), |acc, line| -> (u64, u64) {
+            let split_line: Vec<&str> = line.split_whitespace().collect();
+            let direction = split_line.first().unwrap();
+            let amount = split_line.get(1).unwrap().parse::<u64>().unwrap();
 
-                match *direction {
-                    "forward" => (acc.0 + amount, acc.1),
-                    "down" => (acc.0, acc.1 + amount),
-                    "up" => (acc.0, acc.1 - amount),
-                    _ => (acc.0, acc.1 + 1),
-                }
-            });
+            match *direction {
+                "forward" => (acc.0 + amount, acc.1),
+                "down" => (acc.0, acc.1 + amount),
+                "up" => (acc.0, acc.1 - amount),
+                _ => (acc.0, acc.1 + 1),
+            }
+        });
 
         Some(answer.0 * answer.1)
     }
 
     fn part_2(input: &str) -> Option<Answer> {
-        let answer: (u64, u64, u64) = input
-            .lines()
-            .fold((0, 0, 0), |acc, line| -> (u64, u64, u64) {
-                let split_line: Vec<&str> = line.split_whitespace().collect();
-                let direction = split_line.first().unwrap();
-                let amount = split_line.get(1).unwrap().parse::<u64>().unwrap();
+        let answer: (u64, u64, u64) =
+            input
+                .lines()
+                .fold((0, 0, 0), |acc, line| -> (u64, u64, u64) {
+                    let split_line: Vec<&str> = line.split_whitespace().collect();
+                    let direction = split_line.first().unwrap();
+                    let amount = split_line.get(1).unwrap().parse::<u64>().unwrap();
 
-                match *direction {
-                    "forward" => (acc.0 + amount, acc.1 + acc.2 * amount, acc.2),
-                    "down" => (acc.0, acc.1, acc.2 + amount),
-                    "up" => (acc.0, acc.1, acc.2 - amount),
-                    _ => (acc.0, acc.1 + 1, acc.2),
-                }
-            });
+                    match *direction {
+                        "forward" => (acc.0 + amount, acc.1 + acc.2 * amount, acc.2),
+                        "down" => (acc.0, acc.1, acc.2 + amount),
+                        "up" => (acc.0, acc.1, acc.2 - amount),
+                        _ => (acc.0, acc.1 + 1, acc.2),
+                    }
+                });
 
         Some(answer.0 * answer.1)
     }
