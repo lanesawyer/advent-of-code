@@ -5,49 +5,41 @@ pub struct Day2;
 
 impl Day for Day2 {
     fn part_1(input: &str) -> Option<Answer> {
-        let measurements: Vec<usize> = input
-            .split_whitespace()
-            .map(|item| item.parse::<usize>().unwrap())
-            .collect();
-        let mut previous_measurement = 0;
-        let mut total_increases = 0;
+        let answer: (u64, u64) = input
+            .lines()
+            .fold((0, 0), |acc, line| -> (u64, u64) {
+                let split_line: Vec<&str> = line.split_whitespace().collect();
+                let direction = split_line.first().unwrap();
+                let amount = split_line.get(1).unwrap().parse::<u64>().unwrap();
 
-        for measurement in measurements {
-            // Skip the first increase since we started at 0
-            if measurement > previous_measurement && previous_measurement != 0 {
-                total_increases += 1;
-            }
+                match *direction {
+                    "forward" => (acc.0 + amount, acc.1),
+                    "down" => (acc.0, acc.1 + amount),
+                    "up" => (acc.0, acc.1 - amount),
+                    _ => (acc.0, acc.1 + 1),
+                }
+            });
 
-            previous_measurement = measurement;
-        }
-
-        Some(total_increases)
+        Some(answer.0 * answer.1)
     }
 
     fn part_2(input: &str) -> Option<Answer> {
-        let measurements: Vec<usize> = input
-            .split_whitespace()
-            .map(|item| item.parse::<usize>().unwrap())
-            .collect();
+        let answer: (u64, u64, u64) = input
+            .lines()
+            .fold((0, 0, 0), |acc, line| -> (u64, u64, u64) {
+                let split_line: Vec<&str> = line.split_whitespace().collect();
+                let direction = split_line.first().unwrap();
+                let amount = split_line.get(1).unwrap().parse::<u64>().unwrap();
 
-        let mut previous_window = 0;
-        let mut total_increases = 0;
-
-        for (index, measurement) in measurements.iter().enumerate() {
-            if index + 2 < measurements.len() {
-                let next = measurements[index + 1];
-                let next_next = measurements[index + 2];
-                let window_sum = measurement + next + next_next;
-
-                if window_sum > previous_window && previous_window != 0 {
-                    total_increases += 1;
+                match *direction {
+                    "forward" => (acc.0 + amount, acc.1 + acc.2 * amount, acc.2),
+                    "down" => (acc.0, acc.1, acc.2 + amount),
+                    "up" => (acc.0, acc.1, acc.2 - amount),
+                    _ => (acc.0, acc.1 + 1, acc.2),
                 }
+            });
 
-                previous_window = window_sum;
-            }
-        }
-
-        Some(total_increases)
+        Some(answer.0 * answer.1)
     }
 }
 
@@ -58,31 +50,23 @@ mod tests {
 
     #[test]
     fn part1_works() {
-        let test_input = r#"199
-            200
-            208
-            210
-            200
-            207
-            240
-            269
-            260
-            263"#;
-        assert_eq!(Day2::part_1(test_input), Some(7));
+        let test_input = r#"forward 5
+            down 5
+            forward 8
+            up 3
+            down 8
+            forward 2"#;
+        assert_eq!(Day2::part_1(test_input), Some(150));
     }
 
     #[test]
     fn part2_works() {
-        let test_input = r#"199
-            200
-            208
-            210
-            200
-            207
-            240
-            269
-            260
-            263"#;
-        assert_eq!(Day2::part_2(test_input), Some(5));
+        let test_input = r#"forward 5
+            down 5
+            forward 8
+            up 3
+            down 8
+            forward 2"#;
+        assert_eq!(Day2::part_2(test_input), Some(900));
     }
 }
