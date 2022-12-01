@@ -5,7 +5,7 @@ mod day2;
 mod day3;
 
 fn main() -> Result<(), AdventError> {
-    println!("==== Advent of Code 2020 ====");
+    println!("==== Advent of Code 2021 ====");
 
     let input = read_input(1)?;
 
