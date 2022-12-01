@@ -1,9 +1,9 @@
 use aoc_utils::{AdventError, Answer};
 use aoc_utils::Day;
 
-pub struct Day1;
+pub struct Day2;
 
-impl Day for Day1 {
+impl Day for Day2 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
         let lines: Vec<&str> = input
             .lines()
@@ -22,7 +22,7 @@ impl Day for Day1 {
 
                 current_backpack = 0;
             } else {
-                current_backpack += trimmed_line.parse::<u64>()?;
+                current_backpack += trimmed_line.parse::<u64>().unwrap();
             }
         }
 
@@ -44,7 +44,7 @@ impl Day for Day1 {
                 calorie_counts.push(current_backpack);
                 current_backpack = 0;
             } else {
-                current_backpack += trimmed_line.parse::<u64>()?;
+                current_backpack += trimmed_line.parse::<u64>().unwrap();
 
                 // If the last backpack is one of the three top ones,
                 // it gets ignored by the first if statement since there
@@ -63,7 +63,7 @@ impl Day for Day1 {
 
 #[cfg(test)]
 mod tests {
-    use super::Day1;
+    use super::Day2;
     use crate::Day;
 
     #[test]
@@ -82,7 +82,7 @@ mod tests {
             9000
 
             10000"#;
-        assert_eq!(Day1::part_1(test_input).unwrap(), 24000);
+        assert_eq!(Day2::part_1(test_input).unwrap(), 24000);
     }
 
     #[test]
@@ -101,6 +101,6 @@ mod tests {
             9000
 
             10000"#;
-        assert_eq!(Day1::part_2(test_input).unwrap(), 45000);
+        assert_eq!(Day2::part_2(test_input).unwrap(), 45000);
     }
 }
