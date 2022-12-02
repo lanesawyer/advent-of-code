@@ -12,7 +12,7 @@ impl Day for Day1 {
 
         for line in lines {
             let trimmed_line = line.trim();
-            if trimmed_line == "" {
+            if trimmed_line.is_empty() {
                 // end of elf backpack
                 if current_backpack > highest_backpack {
                     highest_backpack = current_backpack;
