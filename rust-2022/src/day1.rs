@@ -1,13 +1,11 @@
-use aoc_utils::{AdventError, Answer};
 use aoc_utils::Day;
+use aoc_utils::{AdventError, Answer};
 
 pub struct Day1;
 
 impl Day for Day1 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
-        let lines: Vec<&str> = input
-            .lines()
-            .collect();
+        let lines: Vec<&str> = input.lines().collect();
 
         let mut current_backpack = 0;
         let mut highest_backpack = 0;
@@ -30,28 +28,19 @@ impl Day for Day1 {
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
-        let lines: Vec<&str> = input
-            .lines()
-            .collect();
+        let lines: Vec<&str> = input.lines().collect();
 
         let mut current_backpack = 0;
         let mut calorie_counts: Vec<u64> = vec![];
 
-        for (index, line) in lines.iter().enumerate()  {
+        for line in lines {
             let trimmed_line = line.trim();
-            if trimmed_line == "" {
+            if trimmed_line.is_empty() {
                 // end of elf backpack
                 calorie_counts.push(current_backpack);
                 current_backpack = 0;
             } else {
                 current_backpack += trimmed_line.parse::<u64>()?;
-
-                // If the last backpack is one of the three top ones,
-                // it gets ignored by the first if statement since there
-                // are no more empty lines after it, so we check here
-                if index == lines.len() - 1 {
-                    calorie_counts.push(current_backpack);
-                }
             }
         }
 
@@ -81,7 +70,8 @@ mod tests {
             8000
             9000
 
-            10000"#;
+            10000
+        "#;
         assert_eq!(Day1::part_1(test_input).unwrap(), 24000);
     }
 
@@ -100,7 +90,8 @@ mod tests {
             8000
             9000
 
-            10000"#;
+            10000
+        "#;
         assert_eq!(Day1::part_2(test_input).unwrap(), 45000);
     }
 }

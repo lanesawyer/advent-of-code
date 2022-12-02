@@ -1,63 +1,84 @@
-use aoc_utils::{AdventError, Answer};
 use aoc_utils::Day;
+use aoc_utils::{AdventError, Answer};
 
 pub struct Day2;
 
 impl Day for Day2 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
-        let lines: Vec<&str> = input
-            .lines()
-            .collect();
+        let lines: Vec<&str> = input.lines().collect();
 
-        let mut current_backpack = 0;
-        let mut highest_backpack = 0;
+        let mut my_total_score = 0;
 
         for line in lines {
-            let trimmed_line = line.trim();
-            if trimmed_line == "" {
-                // end of elf backpack
-                if current_backpack > highest_backpack {
-                    highest_backpack = current_backpack;
-                }
+            let mut iter = line.split_whitespace();
+            let enemy_action = iter.next().unwrap();
+            let my_action = iter.next().unwrap();
 
-                current_backpack = 0;
-            } else {
-                current_backpack += trimmed_line.parse::<u64>().unwrap();
-            }
+            let match_score = match (enemy_action, my_action) {
+                ("A", "Y") | ("B", "Z") | ("C", "X") => 6, // Win
+                ("A", "X") | ("B", "Y") | ("C", "Z") => 3, // Tie
+                ("A", "Z") | ("B", "X") | ("C", "Y") => 0, // Lose
+                _ => panic!("Impossible situation. This isn't rock paper scissors lizard Spock!"),
+            };
+
+            // Calculate my score for my selection
+            let my_action_score = match my_action {
+                "X" => 1, // Rock
+                "Y" => 2, // Paper
+                "Z" => 3, // Scissors
+                _ => panic!("Impossible situation. This isn't rock paper scissors lizard Spock!"),
+            };
+
+            my_total_score += match_score + my_action_score;
         }
 
-        Ok(highest_backpack)
+        Ok(my_total_score)
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
-        let lines: Vec<&str> = input
-            .lines()
-            .collect();
+        let lines: Vec<&str> = input.lines().collect();
 
-        let mut current_backpack = 0;
-        let mut calorie_counts: Vec<u64> = vec![];
+        let mut my_total_score = 0;
 
-        for (index, line) in lines.iter().enumerate()  {
-            let trimmed_line = line.trim();
-            if trimmed_line == "" {
-                // end of elf backpack
-                calorie_counts.push(current_backpack);
-                current_backpack = 0;
-            } else {
-                current_backpack += trimmed_line.parse::<u64>().unwrap();
+        for line in lines {
+            let mut iter = line.split_whitespace();
+            let enemy_action = iter.next().unwrap();
+            let needed_result = iter.next().unwrap();
 
-                // If the last backpack is one of the three top ones,
-                // it gets ignored by the first if statement since there
-                // are no more empty lines after it, so we check here
-                if index == lines.len() - 1 {
-                    calorie_counts.push(current_backpack);
-                }
-            }
+            // A is rock
+            // B is paper
+            // C is scissors
+
+            // X is lose
+            // Y is draw
+            // Z is win
+
+            let my_action = match (enemy_action, needed_result) {
+                ("A", "Y") | ("B", "X") | ("C", "Z") => "A",
+                ("A", "Z") | ("B", "Y") | ("C", "X") => "B",
+                ("A", "X") | ("B", "Z") | ("C", "Y") => "C",
+                _ => panic!("Impossible situation. This isn't rock paper scissors lizard Spock!"),
+            };
+
+            let match_score = match (enemy_action, my_action) {
+                ("A", "B") | ("B", "C") | ("C", "A") => 6, // Win
+                ("A", "A") | ("B", "B") | ("C", "C") => 3, // Tie
+                ("A", "C") | ("B", "A") | ("C", "B") => 0, // Lose
+                _ => panic!("Impossible situation. This isn't rock paper scissors lizard Spock!"),
+            };
+
+            // Calculate my score for my selection
+            let my_action_score = match my_action {
+                "A" => 1, // Rock
+                "B" => 2, // Paper
+                "C" => 3, // Scissors
+                _ => panic!("Impossible situation. This isn't rock paper scissors lizard Spock!"),
+            };
+
+            my_total_score += match_score + my_action_score;
         }
 
-        calorie_counts.sort_by(|a, b| b.cmp(a));
-
-        Ok(calorie_counts[0] + calorie_counts[1] + calorie_counts[2])
+        Ok(my_total_score)
     }
 }
 
@@ -68,39 +89,17 @@ mod tests {
 
     #[test]
     fn part1_works() {
-        let test_input = r#"1000
-            2000
-            3000
-
-            4000
-
-            5000
-            6000
-
-            7000
-            8000
-            9000
-
-            10000"#;
-        assert_eq!(Day2::part_1(test_input).unwrap(), 24000);
+        let test_input = r#"A Y
+            B X
+            C Z"#;
+        assert_eq!(Day2::part_1(test_input).unwrap(), 15);
     }
 
     #[test]
     fn part2_works() {
-        let test_input = r#"1000
-            2000
-            3000
-
-            4000
-
-            5000
-            6000
-
-            7000
-            8000
-            9000
-
-            10000"#;
-        assert_eq!(Day2::part_2(test_input).unwrap(), 45000);
+        let test_input = r#"A Y
+            B X
+            C Z"#;
+        assert_eq!(Day2::part_2(test_input).unwrap(), 12);
     }
 }
