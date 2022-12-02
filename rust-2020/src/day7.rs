@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-use super::Answer;
+use super::{AdventError, Answer};
 use crate::Day;
 
 pub struct Day7;
 
 impl Day for Day7 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         let bag_to_find = "shiny gold bag";
 
         let bag_contains_list = input
@@ -37,7 +37,7 @@ impl Day for Day7 {
             })
             .collect::<HashMap<String, Vec<(usize, String)>>>();
 
-        let something = bag_contains_list.get(bag_to_find)?;
+        let something = bag_contains_list.get(bag_to_find).unwrap();
 
         for pair in something {
             let (num, bag) = pair;
@@ -52,23 +52,23 @@ impl Day for Day7 {
         // find all that can contain that one
         // work your way up to what can contain that bag, etc.
         // recursively or whatever
-        Some(1)
+        Ok(1)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
-        Some(1)
-    }
-}
-
-fn find_bag() -> usize {
-    let something = bag_contains_list.get(bag_to_find);
-
-    for pair in something {
-        let (num, bag) = pair;
-
-        return num + find_bag()
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
+        Ok(1)
     }
 }
+
+// fn find_bag() -> usize {
+//     let something = bag_contains_list.get(bag_to_find);
+
+//     for pair in something {
+//         let (num, bag) = pair;
+
+//         return num + find_bag()
+//     }
+// }
 
 #[cfg(test)]
 mod tests {
@@ -83,7 +83,7 @@ mod tests {
             299
             675
             7456"#;
-        assert_eq!(Day7::part_1(test_input), Some(574579));
+        assert_eq!(Day7::part_1(test_input).unwrap(), 574579);
     }
 
     #[test]
@@ -94,6 +94,6 @@ mod tests {
             299
             675
             7456"#;
-        assert_eq!(Day7::part_2(test_input), Some(247867950));
+        assert_eq!(Day7::part_2(test_input).unwrap(), 247867950);
     }
 }

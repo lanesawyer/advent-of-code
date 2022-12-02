@@ -1,12 +1,12 @@
 use std::collections::HashSet;
 
-use super::Answer;
+use super::{AdventError, Answer};
 use crate::Day;
 
 pub struct Day6;
 
 impl Day for Day6 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         let num_questions_answered = input
             .split("\n\n")
             .map(|group| {
@@ -18,10 +18,10 @@ impl Day for Day6 {
             })
             .sum::<usize>();
 
-        Some(num_questions_answered as u64)
+        Ok(num_questions_answered as u64)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         let something = input
             .split("\n\n")
             .map(|group| {
@@ -38,7 +38,7 @@ impl Day for Day6 {
             })
             .sum::<usize>();
 
-        Some(something as u64)
+        Ok(something as u64)
     }
 }
 
@@ -64,13 +64,13 @@ mod tests {
         a
 
         b"#;
-        assert_eq!(Day6::part_1(test_input), Some(11));
+        assert_eq!(Day6::part_1(test_input).unwrap(), 11);
     }
 
     #[test]
     fn part2_works() {
         // Not sure how to make this easily since it wasn't provided
         let test_input = "";
-        assert_eq!(Day6::part_2(test_input), Some(0));
+        assert_eq!(Day6::part_2(test_input).unwrap(), 0);
     }
 }

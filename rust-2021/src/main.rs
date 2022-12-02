@@ -10,37 +10,37 @@ fn main() -> Result<(), AdventError> {
     let input = read_input(1)?;
 
     match day1::Day1::part_1(&input) {
-        Some(answer) => println!("Day 1, part 1: {}", answer),
-        None => println!("Not found"),
+        Ok(answer) => println!("Day 1, part 1: {}", answer),
+        Err(error) => println!("Not found"),
     }
 
     match day1::Day1::part_2(&input) {
-        Some(answer) => println!("Day 1, part 2: {}", answer),
-        None => println!("Not found"),
+        Ok(answer) => println!("Day 1, part 2: {}", answer),
+        Err(error) => println!("Not found"),
     }
 
     let input = read_input(2)?;
 
     match day2::Day2::part_1(&input) {
-        Some(answer) => println!("Day 2, part 1: {}", answer),
-        None => println!("Not found"),
+        Ok(answer) => println!("Day 2, part 1: {}", answer),
+        Err(error) => println!("Not found"),
     }
 
     match day2::Day2::part_2(&input) {
-        Some(answer) => println!("Day 2, part 2: {}", answer),
-        None => println!("Not found"),
+        Ok(answer) => println!("Day 2, part 2: {}", answer),
+        Err(error) => println!("Not found"),
     }
 
     let input = read_input(3)?;
 
     match day3::Day3::part_1(&input) {
-        Some(answer) => println!("Day 3, part 1: {}", answer),
-        None => println!("Not found"),
+        Ok(answer) => println!("Day 3, part 1: {}", answer),
+        Err(error) => println!("Not found"),
     }
 
     match day3::Day3::part_2(&input) {
-        Some(answer) => println!("Day 3, part 2: {}", answer),
-        None => println!("Not found"),
+        Ok(answer) => println!("Day 3, part 2: {}", answer),
+        Err(error) => println!("Not found"),
     }
 
     Ok(())

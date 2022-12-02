@@ -1,15 +1,15 @@
-use super::Answer;
+use super::{AdventError, Answer};
 use crate::Day;
 
 pub struct Day4;
 
 impl Day for Day4 {
-    fn part_1(input: &str) -> Option<Answer> {
-        Some(count_passports(input, false))
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
+        Ok(count_passports(input, false))
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
-        Some(count_passports(input, true))
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
+        Ok(count_passports(input, true))
     }
 }
 
@@ -199,7 +199,7 @@ mod tests {
             hcl:#cfa07d eyr:2025 pid:166559648
             iyr:2011 ecl:brn hgt:59in
         ";
-        assert_eq!(Day4::part_1(test_input), Some(2));
+        assert_eq!(Day4::part_1(test_input).unwrap(), 2);
     }
 
     #[test]
@@ -219,7 +219,7 @@ mod tests {
             eyr:2038 hcl:74454a iyr:2023
             pid:3556412378 byr:2007
         ";
-        assert_eq!(Day4::part_2(test_input), Some(0));
+        assert_eq!(Day4::part_2(test_input).unwrap(), 0);
     }
 
     #[test]
@@ -238,6 +238,6 @@ mod tests {
             
             iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
         ";
-        assert_eq!(Day4::part_2(test_input), Some(4));
+        assert_eq!(Day4::part_2(test_input).unwrap(), 4);
     }
 }

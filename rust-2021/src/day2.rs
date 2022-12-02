@@ -1,10 +1,10 @@
-use aoc_utils::Answer;
 use aoc_utils::Day;
+use aoc_utils::{AdventError, Answer};
 
 pub struct Day2;
 
 impl Day for Day2 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         let answer: (u64, u64) = input.lines().fold((0, 0), |acc, line| -> (u64, u64) {
             let split_line: Vec<&str> = line.split_whitespace().collect();
             let direction = split_line.first().unwrap();
@@ -18,10 +18,10 @@ impl Day for Day2 {
             }
         });
 
-        Some(answer.0 * answer.1)
+        Ok(answer.0 * answer.1)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         let answer: (u64, u64, u64) =
             input
                 .lines()
@@ -38,7 +38,7 @@ impl Day for Day2 {
                     }
                 });
 
-        Some(answer.0 * answer.1)
+        Ok(answer.0 * answer.1)
     }
 }
 
@@ -55,7 +55,7 @@ mod tests {
             up 3
             down 8
             forward 2"#;
-        assert_eq!(Day2::part_1(test_input), Some(150));
+        assert_eq!(Day2::part_1(test_input).unwrap(), 150);
     }
 
     #[test]
@@ -66,6 +66,6 @@ mod tests {
             up 3
             down 8
             forward 2"#;
-        assert_eq!(Day2::part_2(test_input), Some(900));
+        assert_eq!(Day2::part_2(test_input).unwrap(), 900);
     }
 }

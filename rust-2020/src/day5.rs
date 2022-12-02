@@ -1,25 +1,25 @@
 use std::collections::HashSet;
 
-use super::Answer;
+use super::{AdventError, Answer};
 use crate::Day;
 
 pub struct Day5;
 
 impl Day for Day5 {
-    fn part_1(input: &str) -> Option<Answer> {
-        input.split_whitespace().map(calculate_seat_number).max()
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
+        Ok(input.split_whitespace().map(calculate_seat_number).max().unwrap())
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         let seats = input
             .split_whitespace()
             .map(calculate_seat_number)
             .collect::<HashSet<u64>>();
 
-        let min = *seats.iter().min()?;
-        let max = *seats.iter().max()?;
+        let min = *seats.iter().min().unwrap();
+        let max = *seats.iter().max().unwrap();
 
-        (min..=max).find(|expected| !seats.contains(expected))
+        Ok((min..=max).find(|expected| !seats.contains(expected)).unwrap())
     }
 }
 
@@ -48,7 +48,7 @@ mod tests {
     #[test]
     fn part1_works() {
         let test_input = "FBFBBFFRLR";
-        assert_eq!(Day5::part_1(test_input), Some(357));
+        assert_eq!(Day5::part_1(test_input).unwrap(), 357);
     }
 
     #[test]
@@ -56,6 +56,6 @@ mod tests {
     fn part2_works() {
         // Not sure how to make this easily since it wasn't provided
         let test_input = "";
-        assert_eq!(Day5::part_2(test_input), Some(0));
+        assert_eq!(Day5::part_2(test_input).unwrap(), 0);
     }
 }

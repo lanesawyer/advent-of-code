@@ -3,8 +3,8 @@ use std::num::ParseIntError;
 pub type Answer = u64;
 
 pub trait Day {
-    fn part_1(day: &str) -> Option<Answer>;
-    fn part_2(day: &str) -> Option<Answer>;
+    fn part_1(day: &str) -> Result<Answer, AdventError>;
+    fn part_2(day: &str) -> Result<Answer, AdventError>;
 }
 
 #[derive(Debug)]

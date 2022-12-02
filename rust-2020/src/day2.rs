@@ -1,10 +1,10 @@
-use super::Answer;
-use crate::{AdventError, Day};
+use super::{AdventError, Answer};
+use crate::Day;
 
 pub struct Day2;
 
 impl Day for Day2 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         // Approach:
         // 1. Split input into lines based on new-lines,
         // 2. Pull out the lower and upper bounds, the character to check, and the password for each line
@@ -17,10 +17,10 @@ impl Day for Day2 {
             .filter(PasswordRule::is_valid_part1)
             .count();
 
-        Some(num_valid_passwords as u64)
+        Ok(num_valid_passwords as u64)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         // Approach:
         // 1. Split input into lines based on new-lines,
         // 2. Pull out the first and second positions, the character to look for in those positions, and the password for each line
@@ -33,7 +33,7 @@ impl Day for Day2 {
             .filter(PasswordRule::is_valid_part2)
             .count();
 
-        Some(num_valid_passwords as u64)
+        Ok(num_valid_passwords as u64)
     }
 }
 
@@ -137,7 +137,7 @@ mod tests {
             1-3 b: cdefg
             2-9 c: ccccccccc6
             11-13 d: ddddddddddd"#;
-        assert_eq!(Day2::part_1(test_input), Some(3));
+        assert_eq!(Day2::part_1(test_input).unwrap(), 3);
     }
 
     #[test]
@@ -146,6 +146,6 @@ mod tests {
             1-3 b: cdefg
             2-9 c: ccccccccc
             11-13 d: ddddddddddddd"#;
-        assert_eq!(Day2::part_2(test_input), Some(1));
+        assert_eq!(Day2::part_2(test_input).unwrap(), 1);
     }
 }

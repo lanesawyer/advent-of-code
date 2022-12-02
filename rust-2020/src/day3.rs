@@ -1,4 +1,4 @@
-use super::Answer;
+use super::{AdventError, Answer};
 use crate::Day;
 
 const TREE_CHAR: char = '#';
@@ -6,7 +6,7 @@ const TREE_CHAR: char = '#';
 pub struct Day3;
 
 impl Day for Day3 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         // Create the counting function with the correct right and down slope
         let tree_finder = make_tree_finder(3);
 
@@ -19,10 +19,10 @@ impl Day for Day3 {
             .filter_map(tree_finder)
             .sum();
 
-        Some(number_of_trees_hit)
+        Ok(number_of_trees_hit)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         // Create all the slopes we need to check
         let tree_finders = vec![
             (1, make_tree_finder(1)),
@@ -47,7 +47,7 @@ impl Day for Day3 {
             })
             .product();
 
-        Some(trees_multiplied)
+        Ok(trees_multiplied)
     }
 }
 
@@ -86,7 +86,7 @@ mod tests {
             .#..#...#.#
         ";
         // why doesn't this work
-        assert_eq!(Day3::part_1(test_input), Some(7));
+        assert_eq!(Day3::part_1(test_input).unwrap(), 7);
     }
 
     #[test]
@@ -106,6 +106,6 @@ mod tests {
             .#..#...#.#
         ";
         // why doesn't this work
-        assert_eq!(Day3::part_2(test_input), Some(336));
+        assert_eq!(Day3::part_2(test_input).unwrap(), 336);
     }
 }

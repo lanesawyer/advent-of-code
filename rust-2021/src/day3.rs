@@ -1,10 +1,10 @@
-use aoc_utils::Answer;
 use aoc_utils::Day;
+use aoc_utils::{AdventError, Answer};
 
 pub struct Day3;
 
 impl Day for Day3 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         let lines: Vec<&str> = input.lines().collect();
         let total_lines = lines.len();
 
@@ -36,10 +36,10 @@ impl Day for Day3 {
         // mask to cut off anything past the number of digits in the input
         let epsilon = !gamma & epsilon_mask;
 
-        Some((gamma * epsilon) as u64)
+        Ok((gamma * epsilon) as u64)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         let lines: Vec<String> = input.lines().map(|line| line.trim().to_string()).collect();
 
         let mut ox_gen_rating: Option<String> = None;
@@ -103,7 +103,7 @@ impl Day for Day3 {
             usize::from_str_radix(&co2_scrub_rating.unwrap(), 2).unwrap();
         let answer = ox_gen_rating_decimal * co2_scrub_rating_decimal;
 
-        Some(answer as u64)
+        Ok(answer as u64)
     }
 }
 
@@ -150,7 +150,7 @@ mod tests {
             11001
             00010
             01010"#;
-        assert_eq!(Day3::part_1(test_input), Some(198));
+        assert_eq!(Day3::part_1(test_input).unwrap(), 198);
     }
 
     #[test]
@@ -167,6 +167,6 @@ mod tests {
             11001
             00010
             01010"#;
-        assert_eq!(Day3::part_2(test_input), Some(230));
+        assert_eq!(Day3::part_2(test_input).unwrap(), 230);
     }
 }

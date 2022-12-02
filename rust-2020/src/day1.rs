@@ -1,12 +1,12 @@
 use std::{collections::HashSet, hash::Hash, str::FromStr};
 
-use super::Answer;
+use super::{AdventError, Answer};
 use crate::Day;
 
 pub struct Day1;
 
 impl Day for Day1 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         let numbers = parse_input::<u64>(input);
 
         // Approach: Go through each number in the list
@@ -22,16 +22,21 @@ impl Day for Day1 {
         // }
 
         // Iterators!
-        numbers.iter().find_map(|num| {
+        let result = numbers.iter().find_map(|num| {
             let to_find = 2020 - num;
             match numbers.contains(&to_find) {
                 true => Some(to_find * num),
                 false => None,
             }
-        })
+        });
+
+        match result {
+            Some(answer) => Ok(answer),
+            None => panic!("No answer found")
+        }
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         let numbers = parse_input::<u64>(input);
 
         // Approach: For each pair of numbers in the list
@@ -45,11 +50,11 @@ impl Day for Day1 {
 
                 let to_find = 2020 - first - second;
                 if numbers.contains(&to_find) {
-                    return Some(to_find * first * second);
+                    return Ok(to_find * first * second);
                 }
             }
         }
-        None
+        panic!("No answer found");
     }
 }
 
@@ -73,7 +78,7 @@ mod tests {
             299
             675
             1456"#;
-        assert_eq!(Day1::part_1(test_input), Some(514579));
+        assert_eq!(Day1::part_1(test_input).unwrap(), 514579);
     }
 
     #[test]
@@ -84,6 +89,6 @@ mod tests {
             299
             675
             1456"#;
-        assert_eq!(Day1::part_2(test_input), Some(241861950));
+        assert_eq!(Day1::part_2(test_input).unwrap(), 241861950);
     }
 }

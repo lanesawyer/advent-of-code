@@ -1,10 +1,10 @@
-use aoc_utils::Answer;
 use aoc_utils::Day;
+use aoc_utils::{AdventError, Answer};
 
 pub struct Day1;
 
 impl Day for Day1 {
-    fn part_1(input: &str) -> Option<Answer> {
+    fn part_1(input: &str) -> Result<Answer, AdventError> {
         let measurements: Vec<usize> = input
             .split_whitespace()
             .map(|item| item.parse::<usize>().unwrap())
@@ -21,10 +21,10 @@ impl Day for Day1 {
             previous_measurement = measurement;
         }
 
-        Some(total_increases)
+        Ok(total_increases)
     }
 
-    fn part_2(input: &str) -> Option<Answer> {
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
         let measurements: Vec<usize> = input
             .split_whitespace()
             .map(|item| item.parse::<usize>().unwrap())
@@ -47,7 +47,7 @@ impl Day for Day1 {
             }
         }
 
-        Some(total_increases)
+        Ok(total_increases)
     }
 }
 
@@ -68,7 +68,7 @@ mod tests {
             269
             260
             263"#;
-        assert_eq!(Day1::part_1(test_input), Some(7));
+        assert_eq!(Day1::part_1(test_input).unwrap(), 7);
     }
 
     #[test]
@@ -83,6 +83,6 @@ mod tests {
             269
             260
             263"#;
-        assert_eq!(Day1::part_2(test_input), Some(5));
+        assert_eq!(Day1::part_2(test_input).unwrap(), 5);
     }
 }
