@@ -20,7 +20,7 @@ fn count_passports(input: &str, strict_validation: bool) -> Answer {
     while let Some(line) = iterator.next() {
         let mut passport = Passport::new(line);
 
-        while let Some(next_line) = iterator.next() {
+        for next_line in iterator.by_ref() {
             if !next_line.trim().is_empty() {
                 passport.parse_line(next_line);
             } else {
@@ -122,17 +122,17 @@ impl Passport {
 
     fn is_valid_strict(&self) -> bool {
         let byr_valid = match self.byr {
-            Some(year) => year >= 1920 && year <= 2002,
+            Some(year) => (1920..=2002).contains(&year),
             None => false,
         };
 
         let iyr_valid = match self.iyr {
-            Some(year) => year >= 2010 && year <= 2020,
+            Some(year) => (2010..=2020).contains(&year),
             None => false,
         };
 
         let eyr_valid = match self.eyr {
-            Some(year) => year >= 2020 && year <= 2030,
+            Some(year) => (2020..=2030).contains(&year),
             None => false,
         };
 
@@ -142,10 +142,10 @@ impl Passport {
 
                 if height.ends_with("cm") {
                     let number = value.parse::<u32>().unwrap_or(0);
-                    number >= 150 && number <= 193
+                    (150..=193).contains(&number)
                 } else if height.ends_with("in") {
                     let number = value.parse::<u32>().unwrap_or(0);
-                    number >= 59 && number <= 76
+                    (59..=76).contains(&number)
                 } else {
                     false
                 }

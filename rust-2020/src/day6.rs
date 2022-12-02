@@ -25,8 +25,8 @@ impl Day for Day6 {
         let something = input
             .split("\n\n")
             .map(|group| {
-                let chars_per_person = group
-                    .split("\n")
+                let _chars_per_person = group
+                    .split('\n')
                     .map(|person| person.chars().collect::<HashSet<char>>());
                 //.collect::<HashSet<char>>()
 

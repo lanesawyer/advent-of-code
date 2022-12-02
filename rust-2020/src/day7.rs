@@ -10,7 +10,7 @@ impl Day for Day7 {
         let bag_to_find = "shiny gold bag";
 
         let bag_contains_list = input
-            .split("\n")
+            .split('\n')
             .filter(|line| !line.is_empty())
             .map(|line| {
                 let parts = line.split(" contain ").collect::<Vec<&str>>();
@@ -27,7 +27,7 @@ impl Day for Day7 {
                         let name = rule[1..]
                             .trim()
                             .replace("bags", "bag") // bags
-                            .replace(".", ""); // bag.
+                            .replace('.', ""); // bag.
 
                         (num, name)
                     })
@@ -40,7 +40,7 @@ impl Day for Day7 {
         let something = bag_contains_list.get(bag_to_find).unwrap();
 
         for pair in something {
-            let (num, bag) = pair;
+            let (_num, bag) = pair;
 
             bag_contains_list.get(bag);
         }
@@ -55,7 +55,7 @@ impl Day for Day7 {
         Ok(1)
     }
 
-    fn part_2(input: &str) -> Result<Answer, AdventError> {
+    fn part_2(_input: &str) -> Result<Answer, AdventError> {
         Ok(1)
     }
 }
