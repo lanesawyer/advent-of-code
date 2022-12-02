@@ -9,7 +9,7 @@ impl Day for Day3 {
         let total_lines = lines.len();
 
         let initial_vec = lines
-            .get(0)
+            .first()
             .unwrap()
             .chars()
             .filter_map(|char| char.to_digit(10))
@@ -72,7 +72,7 @@ impl Day for Day3 {
 
         let mut co2_scrub_rating: Option<String> = None;
         loop_count = 0;
-        filtered_list = lines.clone();
+        filtered_list = lines;
 
         while co2_scrub_rating == None {
             let digit_count = filtered_list.iter().fold(0, |acc, line| {
