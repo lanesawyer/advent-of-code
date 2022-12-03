@@ -1,7 +1,6 @@
 use std::collections::HashSet;
 
-use aoc_utils::Day;
-use aoc_utils::{AdventError, Answer};
+use aoc_utils::{test_day, AdventError, Answer, Day};
 
 pub struct Day3;
 
@@ -41,9 +40,9 @@ impl Day for Day3 {
         let total_priority = lines
             .chunks(3)
             .map(|elf_group| {
-                let first_elf = elf_group[0];
-                let second_elf = elf_group[1];
-                let third_elf = elf_group[2];
+                let first_elf = elf_group[0].trim();
+                let second_elf = elf_group[1].trim();
+                let third_elf = elf_group[2].trim();
 
                 let first_elf: HashSet<char> = first_elf.chars().collect();
                 let second_elf: HashSet<char> = second_elf.chars().collect();
@@ -70,30 +69,14 @@ impl Day for Day3 {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::Day3;
-    use crate::Day;
-
-    #[test]
-    fn part1_works() {
-        let test_input = r#"vJrwpWtwJgWrhcsFMMfFFhFp
-            jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-            PmmdzqPrVvPwwTWBwg
-            wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-            ttgJtRGJQctTZtZT
-            CrZsJsPPZsGzwwsLwLmpwMDw"#;
-        assert_eq!(Day3::part_1(test_input).unwrap(), 157);
-    }
-
-    #[test]
-    fn part2_works() {
-        let test_input = r#"vJrwpWtwJgWrhcsFMMfFFhFp
-            jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-            PmmdzqPrVvPwwTWBwg
-            wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-            ttgJtRGJQctTZtZT
-            CrZsJsPPZsGzwwsLwLmpwMDw"#;
-        assert_eq!(Day3::part_2(test_input).unwrap(), 70);
-    }
-}
+test_day!(
+    Day3,
+    157,
+    70,
+    r#"vJrwpWtwJgWrhcsFMMfFFhFp
+        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+        PmmdzqPrVvPwwTWBwg
+        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+        ttgJtRGJQctTZtZT
+        CrZsJsPPZsGzwwsLwLmpwMDw"#
+);

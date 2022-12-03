@@ -1,5 +1,4 @@
-use aoc_utils::Day;
-use aoc_utils::{AdventError, Answer};
+use aoc_utils::{test_day, AdventError, Answer, Day};
 
 pub struct Day1;
 
@@ -50,48 +49,23 @@ impl Day for Day1 {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::Day1;
-    use crate::Day;
+test_day!(
+    Day1,
+    24000,
+    45000,
+    r#"1000
+        2000
+        3000
 
-    #[test]
-    fn part1_works() {
-        let test_input = r#"1000
-            2000
-            3000
+        4000
 
-            4000
+        5000
+        6000
 
-            5000
-            6000
+        7000
+        8000
+        9000
 
-            7000
-            8000
-            9000
-
-            10000
-        "#;
-        assert_eq!(Day1::part_1(test_input).unwrap(), 24000);
-    }
-
-    #[test]
-    fn part2_works() {
-        let test_input = r#"1000
-            2000
-            3000
-
-            4000
-
-            5000
-            6000
-
-            7000
-            8000
-            9000
-
-            10000
-        "#;
-        assert_eq!(Day1::part_2(test_input).unwrap(), 45000);
-    }
-}
+        10000
+    "#
+);

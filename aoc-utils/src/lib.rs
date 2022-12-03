@@ -29,3 +29,26 @@ pub fn read_input(day: u8) -> Result<String, AdventError> {
     let input = std::fs::read_to_string(format!("./input/day{}.txt", day))?;
     Ok(input)
 }
+
+#[macro_export]
+macro_rules! test_day {
+    ($day:ident, $answer1:expr, $answer2:expr, $test_input:expr) => {
+        #[cfg(test)]
+        mod tests {
+            use super::$day;
+            use crate::Day;
+
+            #[test]
+            fn part1_works() {
+                let test_input = $test_input;
+                assert_eq!($day::part_1(test_input).unwrap(), $answer1);
+            }
+
+            #[test]
+            fn part2_works() {
+                let test_input = $test_input;
+                assert_eq!($day::part_2(test_input).unwrap(), $answer2);
+            }
+        }
+    };
+}

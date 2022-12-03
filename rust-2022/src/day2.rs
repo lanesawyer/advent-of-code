@@ -1,5 +1,4 @@
-use aoc_utils::Day;
-use aoc_utils::{AdventError, Answer};
+use aoc_utils::{test_day, AdventError, Answer, Day};
 
 pub struct Day2;
 
@@ -82,24 +81,11 @@ impl Day for Day2 {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::Day2;
-    use crate::Day;
-
-    #[test]
-    fn part1_works() {
-        let test_input = r#"A Y
-            B X
-            C Z"#;
-        assert_eq!(Day2::part_1(test_input).unwrap(), 15);
-    }
-
-    #[test]
-    fn part2_works() {
-        let test_input = r#"A Y
-            B X
-            C Z"#;
-        assert_eq!(Day2::part_2(test_input).unwrap(), 12);
-    }
-}
+test_day!(
+    Day2,
+    15,
+    12,
+    r#"A Y
+        B X
+        C Z"#
+);
