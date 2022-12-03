@@ -53,7 +53,7 @@ macro_rules! test_day {
         #[cfg(test)]
         mod tests {
             use super::$day;
-            use crate::Day;
+            use $crate::Day;
 
             #[test]
             fn part1_works() {
