@@ -35,16 +35,28 @@ macro_rules! run_day {
     ($day:ident, $day_num:expr) => {
         {
             use aoc_utils::{Day, read_input};
+            use std::time::Instant;
             let input = read_input($day_num)?;
 
+            let part_one_start = Instant::now();
+
+            println!("Day {}", $day_num);
             match $day::part_1(&input) {
-                Ok(answer) => println!("Day {}, part 1: {}", $day_num, answer),
-                Err(error) => println!("Error: {:#?}", error),
+                Ok(answer) => {
+                    let elapsed = part_one_start.elapsed();
+                    println!("  Part 1: {} ({:?})", answer, elapsed);
+                },
+                Err(error) => println!("  Part 1 error: {:#?}", error),
             }
 
+            let part_two_start = Instant::now();
+
             match $day::part_2(&input) {
-                Ok(answer) => println!("Day {}, part 2: {}", $day_num, answer),
-                Err(error) => println!("Error: {:#?}", error),
+                Ok(answer) => {
+                    let elapsed = part_two_start.elapsed();
+                    println!("  Part 2: {} ({:?})", answer, elapsed);
+                },
+                Err(error) => println!("  Part 2 error: {:#?}", error),
             }
         }
     };
