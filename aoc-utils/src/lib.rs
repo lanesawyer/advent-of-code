@@ -33,16 +33,19 @@ pub fn read_input(day: u8) -> Result<String, AdventError> {
 #[macro_export]
 macro_rules! run_day {
     ($day:ident, $day_num:expr) => {
-        let input = read_input($day_num)?;
+        {
+            use aoc_utils::{Day, read_input};
+            let input = read_input($day_num)?;
 
-        match $day::part_1(&input) {
-            Ok(answer) => println!("Day {}, part 1: {}", $day_num, answer),
-            Err(error) => println!("Error: {:#?}", error),
-        }
+            match $day::part_1(&input) {
+                Ok(answer) => println!("Day {}, part 1: {}", $day_num, answer),
+                Err(error) => println!("Error: {:#?}", error),
+            }
 
-        match $day::part_2(&input) {
-            Ok(answer) => println!("Day {}, part 2: {}", $day_num, answer),
-            Err(error) => println!("Error: {:#?}", error),
+            match $day::part_2(&input) {
+                Ok(answer) => println!("Day {}, part 2: {}", $day_num, answer),
+                Err(error) => println!("Error: {:#?}", error),
+            }
         }
     };
 }
