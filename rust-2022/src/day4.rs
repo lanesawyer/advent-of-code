@@ -47,19 +47,16 @@ impl Day for Day4 {
                     && first_elf_higher <= second_elf_higher)
                     || (second_elf_lower >= first_elf_lower
                         && second_elf_higher <= first_elf_higher);
-                let is_matching_borders =
-                    first_elf_lower == second_elf_higher || first_elf_higher == second_elf_lower;
                 let first_contains_second_lower =
                     first_elf_higher > second_elf_lower && first_elf_lower < second_elf_lower;
                 let first_contains_second_higher =
-                    first_elf_higher > second_elf_higher && first_elf_lower < second_elf_higher;
+                    first_elf_higher > second_elf_higher && first_elf_lower <= second_elf_higher;
                 let second_contains_first_lower =
                     second_elf_higher > first_elf_lower && second_elf_lower < first_elf_lower;
                 let second_contains_first_higher =
-                    second_elf_higher > first_elf_higher && second_elf_lower < first_elf_higher;
+                    second_elf_higher > first_elf_higher && second_elf_lower <= first_elf_higher;
 
                 if is_fully_contained
-                    || is_matching_borders
                     || first_contains_second_lower
                     || first_contains_second_higher
                     || second_contains_first_lower
