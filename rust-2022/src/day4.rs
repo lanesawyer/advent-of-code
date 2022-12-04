@@ -12,14 +12,8 @@ impl Day for Day4 {
                 let first_elf = elf_groups.next().unwrap();
                 let second_elf = elf_groups.next().unwrap();
 
-                let first_elf: Vec<&str> = first_elf.split('-').collect();
-                let second_elf: Vec<&str> = second_elf.split('-').collect();
-
-                let first_elf_lower = first_elf[0].parse::<u64>().unwrap();
-                let first_elf_higher = first_elf[1].parse::<u64>().unwrap();
-
-                let second_elf_lower = second_elf[0].parse::<u64>().unwrap();
-                let second_elf_higher = second_elf[1].parse::<u64>().unwrap();
+                let (first_elf_lower, first_elf_higher) = parse_bounds(first_elf).ok()?;
+                let (second_elf_lower, second_elf_higher) = parse_bounds(second_elf).ok()?;
 
                 let is_fully_contained = (first_elf_lower >= second_elf_lower
                     && first_elf_higher <= second_elf_higher)
@@ -44,14 +38,8 @@ impl Day for Day4 {
                 let first_elf = elf_groups.next().unwrap();
                 let second_elf = elf_groups.next().unwrap();
 
-                let first_elf: Vec<&str> = first_elf.split('-').collect();
-                let second_elf: Vec<&str> = second_elf.split('-').collect();
-
-                let first_elf_lower = first_elf[0].parse::<u64>().unwrap();
-                let first_elf_higher = first_elf[1].parse::<u64>().unwrap();
-
-                let second_elf_lower = second_elf[0].parse::<u64>().unwrap();
-                let second_elf_higher = second_elf[1].parse::<u64>().unwrap();
+                let (first_elf_lower, first_elf_higher) = parse_bounds(first_elf).ok()?;
+                let (second_elf_lower, second_elf_higher) = parse_bounds(second_elf).ok()?;
 
                 // There is horrific because there is absolutely a way to simplify this
                 // but I want to get the answer first
@@ -85,6 +73,14 @@ impl Day for Day4 {
             .count();
         Ok(fully_contained as u64)
     }
+}
+
+fn parse_bounds(grouping: &str) -> Result<(u64, u64), AdventError> {
+    let grouping: Vec<&str> = grouping.split('-').collect();
+
+    let lower_bound = grouping[0].parse::<u64>()?;
+    let upper_bound = grouping[1].parse::<u64>()?;
+    Ok((lower_bound, upper_bound))
 }
 
 test_day!(
