@@ -6,27 +6,26 @@ impl Day for Day5 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
         let mut lines = input.lines();
 
-        let mut picture: Vec<&str> = Vec::new();
-        for line in lines.by_ref() {
-            // First empty line is the end of the crates picture
-            if line.is_empty() {
-                break;
-            }
+        let mut initial_stacks: Vec<&str> = lines
+            .by_ref()
+            .map(|line| {
+                // First empty line is the end of the crates picture
+                if line.is_empty() {
+                    return None;
+                }
 
-            picture.push(line);
-        }
+                Some(line)
+            })
+            .take_while(|result| result.is_some())
+            .map(|item| item.unwrap())
+            .collect();
 
-        let stack_positions = picture
-            .pop()
-            .unwrap()
-            .split_whitespace()
-            // refactor into .count()
-            .map(|item| item.parse::<u64>().unwrap());
+        let stack_positions = initial_stacks.pop().unwrap().split_whitespace().count();
 
-        let mut stacks: Vec<Vec<String>> = stack_positions.map(|_| Vec::new()).collect();
-        picture.reverse();
+        let mut stacks: Vec<Vec<String>> = (0..stack_positions).map(|_| Vec::new()).collect();
+        initial_stacks.reverse();
 
-        for crate_level in picture {
+        for crate_level in initial_stacks {
             let chars = crate_level.chars();
 
             for (index, item) in chars.enumerate() {
@@ -59,33 +58,33 @@ impl Day for Day5 {
             print!("{}", stack.pop().unwrap());
         }
         println!();
+        // TODO: Answer needs to support String too
         Ok(0)
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
         let mut lines = input.lines();
 
-        let mut picture: Vec<&str> = Vec::new();
-        for line in lines.by_ref() {
-            // First empty line is the end of the crates picture
-            if line.is_empty() {
-                break;
-            }
+        let mut initial_stacks: Vec<&str> = lines
+            .by_ref()
+            .map(|line| {
+                // First empty line is the end of the crates picture
+                if line.is_empty() {
+                    return None;
+                }
 
-            picture.push(line);
-        }
+                Some(line)
+            })
+            .take_while(|result| result.is_some())
+            .map(|item| item.unwrap())
+            .collect();
 
-        let stack_positions = picture
-            .pop()
-            .unwrap()
-            .split_whitespace()
-            // refactor into .count()
-            .map(|item| item.parse::<u64>().unwrap());
+        let stack_positions = initial_stacks.pop().unwrap().split_whitespace().count();
 
-        let mut stacks: Vec<Vec<String>> = stack_positions.map(|_| Vec::new()).collect();
-        picture.reverse();
+        let mut stacks: Vec<Vec<String>> = (0..stack_positions).map(|_| Vec::new()).collect();
+        initial_stacks.reverse();
 
-        for crate_level in picture {
+        for crate_level in initial_stacks {
             let chars = crate_level.chars();
 
             for (index, item) in chars.enumerate() {
@@ -106,13 +105,14 @@ impl Day for Day5 {
             parsed_movement.next();
             let to = parsed_movement.next().unwrap().parse::<usize>().unwrap();
 
-            let mut temp_stack: Vec<String> = (0..how_many).into_iter().map(|_| {
-                stacks[from - 1].pop().unwrap()
-            }).collect();
+            let mut temp_stack: Vec<String> = (0..how_many)
+                .into_iter()
+                .map(|_| stacks[from - 1].pop().unwrap())
+                .collect();
 
             temp_stack.reverse();
 
-            stacks[to -1].append(&mut temp_stack);
+            stacks[to - 1].append(&mut temp_stack);
         }
 
         println!("{:?}", stacks);
@@ -121,14 +121,15 @@ impl Day for Day5 {
             print!("{}", stack.pop().unwrap());
         }
         println!();
+        // TODO: Answer needs to support String too
         Ok(0)
     }
 }
 
 test_day!(
     Day5,
-    1234,
-    1234,
+    1234, // CMZ real answer 1
+    1234, // MCD real answer 2
     // Usually I indent to make it pretty but parsing needs spacing information
     r#"    [D]    
 [N] [C]    
