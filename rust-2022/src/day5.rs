@@ -52,12 +52,15 @@ impl Day for Day5 {
             }
         }
 
-        println!("{:?}", stacks);
+        let mut answer = "".to_string();
 
         for mut stack in stacks {
-            print!("{}", stack.pop().unwrap());
+            let top_value = stack.pop().unwrap();
+            answer += &top_value;
         }
-        println!();
+
+        println!("  Part 1 true answer: {}", answer);
+
         // TODO: Answer needs to support String too
         Ok(0)
     }
@@ -115,12 +118,15 @@ impl Day for Day5 {
             stacks[to - 1].append(&mut temp_stack);
         }
 
-        println!("{:?}", stacks);
+        let mut answer = "".to_string();
 
         for mut stack in stacks {
-            print!("{}", stack.pop().unwrap());
+            let top_value = stack.pop().unwrap();
+            answer += &top_value;
         }
-        println!();
+
+        println!("  Part 2 true answer: {}", answer);
+
         // TODO: Answer needs to support String too
         Ok(0)
     }
