@@ -81,22 +81,4 @@ macro_rules! test_day {
             }
         }
     };
-    // TODO: Is there a better way than copy/pasting the whole setup for tests with different inputs?
-    ($day:ident, $answer1:expr, $answer2:expr, $test_input1:expr, $test_input2:expr) => {
-        #[cfg(test)]
-        mod tests {
-            use super::$day;
-            use $crate::Day;
-
-            #[test]
-            fn part1_works() {
-                assert_eq!($day::part_1($test_input1).unwrap(), $answer1);
-            }
-
-            #[test]
-            fn part2_works() {
-                assert_eq!($day::part_2($test_input2).unwrap(), $answer2);
-            }
-        }
-    };
 }

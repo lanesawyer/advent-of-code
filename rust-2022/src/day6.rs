@@ -39,7 +39,6 @@ impl Day for Day6 {
 test_day!(
     Day6,
     5,
-    19,
-    "bvwbjplbgvbhsrlpgdmjqwftvncz",
-    "mjqjpqmgbljsphdztnvjfqwrcgsmlb"
+    23,
+    "bvwbjplbgvbhsrlpgdmjqwftvncz"
 );
