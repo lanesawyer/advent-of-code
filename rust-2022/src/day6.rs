@@ -40,6 +40,6 @@ test_day!(
     Day6,
     5,
     19,
-    // r#"bvwbjplbgvbhsrlpgdmjqwftvncz"#, // TODO: Macro for different inputs to tests
-    r#"mjqjpqmgbljsphdztnvjfqwrcgsmlb"#
+    "bvwbjplbgvbhsrlpgdmjqwftvncz",
+    "mjqjpqmgbljsphdztnvjfqwrcgsmlb"
 );
