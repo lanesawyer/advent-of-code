@@ -9,9 +9,7 @@ impl Day for Day6 {
         let chars: Vec<char> = input.chars().collect();
 
         for index in 0..chars.len() {
-            let set: HashSet<char> = (0..4).map(|num| {
-                chars[index + num]
-            }).collect();
+            let set: HashSet<char> = (0..4).map(|num| chars[index + num]).collect();
 
             if set.len() == 4 {
                 return Ok(index as u64 + 4);
@@ -24,9 +22,7 @@ impl Day for Day6 {
         let chars: Vec<char> = input.chars().collect();
 
         for index in 0..chars.len() {
-            let set: HashSet<char> = (0..14).map(|num| {
-                chars[index + num]
-            }).collect();
+            let set: HashSet<char> = (0..14).map(|num| chars[index + num]).collect();
 
             if set.len() == 14 {
                 return Ok(index as u64 + 14);
@@ -36,9 +32,4 @@ impl Day for Day6 {
     }
 }
 
-test_day!(
-    Day6,
-    5,
-    23,
-    "bvwbjplbgvbhsrlpgdmjqwftvncz"
-);
+test_day!(Day6, 5, 23, "bvwbjplbgvbhsrlpgdmjqwftvncz");

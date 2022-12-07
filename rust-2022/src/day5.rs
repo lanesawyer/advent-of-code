@@ -134,8 +134,8 @@ impl Day for Day5 {
 
 test_day!(
     Day5,
-    1234, // CMZ real answer 1
-    1234, // MCD real answer 2
+    0, // CMZ real answer 1
+    0, // MCD real answer 2
     // Usually I indent to make it pretty but parsing needs spacing information
     r#"    [D]    
 [N] [C]    
