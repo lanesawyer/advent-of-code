@@ -18,8 +18,7 @@ impl Day for Day1 {
                     .into();
                 let last_component: u64 = trimmed_calibration
                     .chars()
-                    .rev()
-                    .find(|c| c.is_ascii_digit())
+                    .rfind(|c| c.is_ascii_digit())
                     .unwrap()
                     .to_digit(10)
                     .unwrap()
@@ -91,18 +90,13 @@ impl Day for Day1 {
                         if pos < number_index {
                             get_number_for_word(&number_words, num_word)
                         } else {
-                            trimmed_calibration
-                                .chars()
-                                .nth(number_index)
-                                .unwrap()
-                                .to_digit(10)
-                                .unwrap()
+                            get_number_in_position(trimmed_calibration, number_index)
                         }
                     }
                 };
 
                 let second_component = match (last_word_index_tuple, last_number_index) {
-                    ((None, _), None) | ((Some(_), None), _) => panic!("Oh boi, nothing found"),
+                    ((None, _), None) | ((Some(_), None), _) => panic!("Oh boi, bad state"),
                     ((None, _), Some(number_index)) => trimmed_calibration
                         .chars()
                         .rev()
@@ -120,13 +114,7 @@ impl Day for Day1 {
                         if pos > trimmed_calibration.len() - 1 - number_index {
                             get_number_for_word(&number_words, num_word)
                         } else {
-                            trimmed_calibration
-                                .chars()
-                                .rev()
-                                .nth(number_index)
-                                .unwrap()
-                                .to_digit(10)
-                                .unwrap()
+                            get_number_in_position_rev(trimmed_calibration, number_index)
                         }
                     }
                 };
@@ -147,6 +135,26 @@ fn get_number_for_word(number_words: &[&str], num_word: &str) -> u32 {
         .try_into()
         .unwrap()
 }
+
+fn get_number_in_position(input: &str, number_index: usize) -> u32 {
+    input
+        .chars()
+        .nth(number_index)
+        .unwrap()
+        .to_digit(10)
+        .unwrap()
+}
+
+fn get_number_in_position_rev(input: &str, number_index: usize) -> u32 {
+    input
+        .chars()
+        .rev()
+        .nth(number_index)
+        .unwrap()
+        .to_digit(10)
+        .unwrap()
+}
+
 
 test_day!(
     Day1,
