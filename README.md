@@ -16,5 +16,5 @@ I decided to do the 2020, 2021, 2022, 2023 challenge using Rust. I don't use Rus
 
 ### Needed Updates
 - I moved from an `Option` to a `Result` on the `Day` response, but haven't migrated 2020 or 2021 years over yet.
-- The `inputs` folder shouldn't be pushed to GitHub to respect the wishes of the AoC creators. I need to add a script to download the inputs for each day, and clear my inputs for all years before 2023
-- Test macro should be able to take in two inputs, sometimes the example puzzle input changes on part 2!
+- Auto-download of puzzle input
+
