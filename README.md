@@ -17,4 +17,5 @@ I decided to do the 2020, 2021, 2022, 2023 challenge using Rust. I don't use Rus
 ### Needed Updates
 - I moved from an `Option` to a `Result` on the `Day` response, but haven't migrated 2020 or 2021 years over yet.
 - Auto-download of puzzle input
-
+- Macro for main that sets up the output and runs the days
+- More helper functions for common input parsing needs

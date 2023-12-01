@@ -25,9 +25,21 @@ impl From<std::io::Error> for AdventError {
     }
 }
 
+/// Reads the input from the file for the given day.
+/// Requires the file to be located in `./input/day{day}.txt`.
+/// Does not do any trimming or other processing.
 pub fn read_input(day: u8) -> Result<String, AdventError> {
     let input = std::fs::read_to_string(format!("./input/day{}.txt", day))?;
     Ok(input)
+}
+
+// Turns an input string into a iterator with trimmed lines
+pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> + '_ {
+    input
+        .lines()
+        .map(|line| line.trim())
+        .filter(|line| !line.is_empty())
+        .map(|line| line.to_string())
 }
 
 #[macro_export]
@@ -64,6 +76,7 @@ macro_rules! run_day {
 
 #[macro_export]
 macro_rules! test_day {
+    // Single test input for both parts
     ($day:ident, $answer1:expr, $answer2:expr, $test_input:expr) => {
         #[cfg(test)]
         mod tests {
@@ -81,6 +94,7 @@ macro_rules! test_day {
             }
         }
     };
+    // Two different test inputs for each part
     ($day:ident, $answer1:expr, $answer2:expr, $test_input:expr, $test_input2:expr) => {
         #[cfg(test)]
         mod tests {
