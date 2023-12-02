@@ -17,15 +17,13 @@ impl Day for Day2 {
                 let mut label_and_game = line.split(':');
 
                 let game_num = label_and_game
-                    .next()
-                    .unwrap()
+                    .next()?
                     .split_whitespace()
-                    .nth(1)
-                    .unwrap()
+                    .nth(1)?
                     .parse::<u64>()
                     .unwrap();
 
-                let rounds = label_and_game.next().unwrap().split(';');
+                let rounds = label_and_game.next()?.split(';');
 
                 let all_rounds_valid =
                     rounds
