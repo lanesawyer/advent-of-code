@@ -39,7 +39,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     if !Path::new(&get_puzzle_input_path(day)).exists() {
         println!("Downloading puzzle input for Day {}, {}", day, year);
         let puzzle_input = download_puzzle_input(year, day)?;
-        save_puzzle_input(1, puzzle_input)?;
+        save_puzzle_input(day, puzzle_input)?;
     } else {
         println!("Puzzle input already downloaded for Day {}, {}", day, year);
     }
