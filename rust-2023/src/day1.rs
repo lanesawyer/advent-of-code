@@ -1,6 +1,10 @@
-use aoc_utils::{test_day, AdventError, Answer, Day, input_to_trimmed_lines};
+use aoc_utils::{input_to_trimmed_lines, test_day, AdventError, Answer, Day};
 
 pub struct Day1;
+
+const NUMBER_WORDS: [&str; 10] = [
+    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+];
 
 impl Day for Day1 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
@@ -29,10 +33,6 @@ impl Day for Day1 {
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
-        let number_words = [
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-        ];
-
         let lines: Answer = input_to_trimmed_lines(input)
             .map(|trimmed_calibration| {
                 // Look through all the English number words
@@ -40,14 +40,14 @@ impl Day for Day1 {
                 // Store the index where it is and the word itself
                 // Filter out Nones (for when there are no English words in the input)
                 // Find the min (or max) index where the English word shows up
-                let first_word_index_tuple = number_words
+                let first_word_index_tuple = NUMBER_WORDS
                     .iter()
                     .map(|number_word| (trimmed_calibration.find(*number_word), Some(*number_word)))
                     .filter(|&(x, _)| x.is_some())
                     .min_by_key(|&(x, _)| x.unwrap())
                     // If we don't find any, mark them as Nones
                     .unwrap_or((None, None));
-                let last_word_index_tuple = number_words
+                let last_word_index_tuple = NUMBER_WORDS
                     .iter()
                     .map(|number_word| (trimmed_calibration.rfind(number_word), Some(*number_word)))
                     .filter(|&(x, _)| x.is_some())
@@ -64,25 +64,19 @@ impl Day for Day1 {
                     .position(|c| c.is_ascii_digit());
 
                 let first_component = match (first_word_index_tuple, first_number_index) {
-                    ((None, _), None) | ((Some(_), None), _) => panic!("Oh boi, bad state"),
+                    ((None, _), None) | ((Some(_), None), _) => {
+                        panic!("Wow, how'd you manage this state?")
+                    }
                     // If there is no English number word, simply get the number from the index
-                    ((None, _), Some(number_index)) => trimmed_calibration
-                        .chars()
-                        .nth(number_index)
-                        .unwrap()
-                        .to_digit(10)
-                        .unwrap(),
+                    ((None, _), Some(number_index)) => {
+                        get_number_in_position(&trimmed_calibration, number_index)
+                    }
                     // If there is no number, get the index of the English number word
                     // which corresponds to its actual number
-                    ((Some(_pos), Some(num_word)), None) => number_words
-                        .iter()
-                        .position(|word| *word == num_word)
-                        .unwrap()
-                        .try_into()
-                        .unwrap(),
+                    ((Some(_), Some(num_word)), None) => get_number_for_word(num_word),
                     ((Some(pos), Some(num_word)), Some(number_index)) => {
                         if pos < number_index {
-                            get_number_for_word(&number_words, num_word)
+                            get_number_for_word(num_word)
                         } else {
                             get_number_in_position(&trimmed_calibration, number_index)
                         }
@@ -90,23 +84,16 @@ impl Day for Day1 {
                 };
 
                 let second_component = match (last_word_index_tuple, last_number_index) {
-                    ((None, _), None) | ((Some(_), None), _) => panic!("Oh boi, bad state"),
-                    ((None, _), Some(number_index)) => trimmed_calibration
-                        .chars()
-                        .rev()
-                        .nth(number_index)
-                        .unwrap()
-                        .to_digit(10)
-                        .unwrap(),
-                    ((Some(_pos), Some(num_word)), None) => number_words
-                        .iter()
-                        .position(|word| *word == num_word)
-                        .unwrap()
-                        .try_into()
-                        .unwrap(),
+                    ((None, _), None) | ((Some(_), None), _) => {
+                        panic!("Wow, how'd you manage this state?")
+                    }
+                    ((None, _), Some(number_index)) => {
+                        get_number_in_position_rev(&trimmed_calibration, number_index)
+                    }
+                    ((Some(_), Some(num_word)), None) => get_number_for_word(num_word),
                     ((Some(pos), Some(num_word)), Some(number_index)) => {
                         if pos > trimmed_calibration.len() - 1 - number_index {
-                            get_number_for_word(&number_words, num_word)
+                            get_number_for_word(num_word)
                         } else {
                             get_number_in_position_rev(&trimmed_calibration, number_index)
                         }
@@ -121,8 +108,8 @@ impl Day for Day1 {
     }
 }
 
-fn get_number_for_word(number_words: &[&str], num_word: &str) -> u32 {
-    number_words
+fn get_number_for_word(num_word: &str) -> u32 {
+    NUMBER_WORDS
         .iter()
         .position(|word| *word == num_word)
         .unwrap()
@@ -148,7 +135,6 @@ fn get_number_in_position_rev(input: &str, number_index: usize) -> u32 {
         .to_digit(10)
         .unwrap()
 }
-
 
 test_day!(
     Day1,
