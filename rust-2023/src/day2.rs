@@ -26,7 +26,7 @@ impl Day for Day2 {
                 let mut rounds = label_and_game.next()?.split(';');
 
                 let all_rounds_valid =
-                    rounds.all(|round| round.split(',').map(parse_round).all(is_valid_round));
+                    rounds.all(|round| round.split(',').map(parse_pull).all(is_valid_pull));
 
                 if all_rounds_valid {
                     Some(game_num)
@@ -45,7 +45,7 @@ impl Day for Day2 {
                 let mut label_and_game = line.split(':');
 
                 let rounds = label_and_game.nth(1).unwrap().split(';');
-                let all_rounds = rounds.map(|round| round.split(',').map(parse_round));
+                let all_rounds = rounds.map(|round| round.split(',').map(parse_pull));
 
                 let all_reds = all_rounds
                     .clone()
@@ -57,9 +57,9 @@ impl Day for Day2 {
                     .clone()
                     .flat_map(|round| round.filter(|(_, color)| *color == BLUE));
 
-                let max_red = get_max_number(all_reds);
-                let max_green = get_max_number(all_greens);
-                let max_blue = get_max_number(all_blues);
+                let max_red = get_max_pull(all_reds);
+                let max_green = get_max_pull(all_greens);
+                let max_blue = get_max_pull(all_blues);
 
                 max_red * max_green * max_blue
             })
@@ -69,14 +69,14 @@ impl Day for Day2 {
     }
 }
 
-fn parse_round(round: &str) -> (u64, &str) {
-    let mut pull = round.split_whitespace();
-    let num = pull.next().unwrap().parse::<u64>().unwrap();
-    let color = pull.next().unwrap();
+fn parse_pull(pull: &str) -> (u64, &str) {
+    let mut pull_parts = pull.split_whitespace();
+    let num = pull_parts.next().unwrap().parse::<u64>().unwrap();
+    let color = pull_parts.next().unwrap();
     (num, color)
 }
 
-fn is_valid_round((num, color): (u64, &str)) -> bool {
+fn is_valid_pull((num, color): (u64, &str)) -> bool {
     match (num, color) {
         (num, RED) => num <= RED_CUBES,
         (num, GREEN) => num <= GREEN_CUBES,
@@ -85,7 +85,7 @@ fn is_valid_round((num, color): (u64, &str)) -> bool {
     }
 }
 
-fn get_max_number<'a>(all_pulls_of_same_color: impl Iterator<Item = (u64, &'a str)>) -> Answer {
+fn get_max_pull<'a>(all_pulls_of_same_color: impl Iterator<Item = (u64, &'a str)>) -> Answer {
     all_pulls_of_same_color
         .max_by_key(|pull| pull.0)
         // If there isn't a pull for the color, we use 1 because 1 * anything is itself
