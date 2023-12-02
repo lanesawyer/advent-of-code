@@ -46,35 +46,38 @@ pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> + '_ 
 
 #[macro_export]
 macro_rules! run_day {
-    ($day:ident, $day_num:expr) => {
-        {
-            use aoc_utils::Day;
-            use std::time::Instant;
+    ($day:ident, $day_num:expr) => {{
+        use aoc_utils::Day;
+        use std::time::Instant;
 
-            let input = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/input/day", $day_num, ".txt"));
+        let input = include_str!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/input/day",
+            $day_num,
+            ".txt"
+        ));
 
-            let part_one_start = Instant::now();
+        let part_one_start = Instant::now();
 
-            println!("Day {}", $day_num);
-            match $day::part_1(&input) {
-                Ok(answer) => {
-                    let elapsed = part_one_start.elapsed();
-                    println!("  Part 1: {} ({:?})", answer, elapsed);
-                },
-                Err(error) => println!("  Part 1 error: {:#?}", error),
+        println!("Day {}", $day_num);
+        match $day::part_1(&input) {
+            Ok(answer) => {
+                let elapsed = part_one_start.elapsed();
+                println!("  Part 1: {} ({:?})", answer, elapsed);
             }
-
-            let part_two_start = Instant::now();
-
-            match $day::part_2(&input) {
-                Ok(answer) => {
-                    let elapsed = part_two_start.elapsed();
-                    println!("  Part 2: {} ({:?})", answer, elapsed);
-                },
-                Err(error) => println!("  Part 2 error: {:#?}", error),
-            }
+            Err(error) => println!("  Part 1 error: {:#?}", error),
         }
-    };
+
+        let part_two_start = Instant::now();
+
+        match $day::part_2(&input) {
+            Ok(answer) => {
+                let elapsed = part_two_start.elapsed();
+                println!("  Part 2: {} ({:?})", answer, elapsed);
+            }
+            Err(error) => println!("  Part 2 error: {:#?}", error),
+        }
+    }};
 }
 
 #[macro_export]

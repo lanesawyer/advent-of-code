@@ -6,4 +6,6 @@ target
 /target
 Cargo.lock
 
+# advent-of-code
 input
+.env
