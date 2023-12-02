@@ -28,7 +28,9 @@ impl From<std::io::Error> for AdventError {
 /// Reads the input from the file for the given day.
 /// Requires the file to be located in `./input/day{day}.txt`.
 /// Does not do any trimming or other processing.
+#[deprecated(note = "Old version, now we use include_str! for faster speeds.")]
 pub fn read_input(day: u8) -> Result<String, AdventError> {
+    // try include_str but use a macro to get around the compile time thingy
     let input = std::fs::read_to_string(format!("./input/day{}.txt", day))?;
     Ok(input)
 }
@@ -46,9 +48,10 @@ pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> + '_ 
 macro_rules! run_day {
     ($day:ident, $day_num:expr) => {
         {
-            use aoc_utils::{Day, read_input};
+            use aoc_utils::Day;
             use std::time::Instant;
-            let input = read_input($day_num)?;
+
+            let input = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/input/day", $day_num, ".txt"));
 
             let part_one_start = Instant::now();
 
