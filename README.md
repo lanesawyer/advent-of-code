@@ -7,7 +7,7 @@ I decided to do the 2020, 2021, 2022, 2023 challenge using Rust. I don't use Rus
 
 ### Running the Project
 - Install the Rust tooling
-- Navigate to `rust-202#/`
+- Navigate to `rust-202#/` for whatever year you want to run
 - `cargo run` will run a CLI program that outputs info for each of the challenges
 - `cargo test` will run all the unit tests
 
@@ -15,7 +15,11 @@ I decided to do the 2020, 2021, 2022, 2023 challenge using Rust. I don't use Rus
 - TODO: Explain the basics
 
 ### Needed Updates
-- I moved from an `Option` to a `Result` on the `Day` response, but haven't migrated 2020 or 2021 years over yet.
-- Auto-download of puzzle input
 - Macro for main that sets up the output and runs the days
+- Remove deprecated read_input function in 2021
 - More helper functions for common input parsing needs
+- Instructions on the CLI for running a specific day
+- Run a single day instead of all of them
+- Set up a workspace so I can have all years depend on workspace dependencies
+- Publish helper crates to crates.io
+- Submission of answers (and rate limiting so I don't accidentally spam the server)

@@ -2,16 +2,16 @@ use aoc_utils::{input_to_trimmed_lines, test_day, AdventError, Answer, Day};
 
 pub struct Day2;
 
+const RED_CUBES: u64 = 12;
+const GREEN_CUBES: u64 = 13;
+const BLUE_CUBES: u64 = 14;
+
 const RED: &str = "red";
 const GREEN: &str = "green";
 const BLUE: &str = "blue";
 
 impl Day for Day2 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
-        let red_cubes = 12;
-        let green_cubes = 13;
-        let blue_cubes = 14;
-
         let sum_of_valid_games: Answer = input_to_trimmed_lines(input)
             .filter_map(|line| {
                 let mut label_and_game = line.split(':');
@@ -25,17 +25,9 @@ impl Day for Day2 {
 
                 let rounds = label_and_game.next()?.split(';');
 
-                let all_rounds_valid =
-                    rounds
-                        .map(|round| round.split(',').map(parse_round))
-                        .all(|round| {
-                            round.clone().all(|(num, color)| match (num, color) {
-                                (num, RED) => num <= red_cubes,
-                                (num, GREEN) => num <= green_cubes,
-                                (num, BLUE) => num <= blue_cubes,
-                                _ => false,
-                            })
-                        });
+                let all_rounds_valid = rounds
+                    .map(|round| round.split(',').map(parse_round))
+                    .all(|round| round.clone().all(is_valid_round));
 
                 if all_rounds_valid {
                     Some(game_num)
@@ -83,6 +75,15 @@ fn parse_round(round: &str) -> (u64, &str) {
     let num = pull.next().unwrap().parse::<u64>().unwrap();
     let color = pull.next().unwrap();
     (num, color)
+}
+
+fn is_valid_round((num, color): (u64, &str)) -> bool {
+    match (num, color) {
+        (num, RED) => num <= RED_CUBES,
+        (num, GREEN) => num <= GREEN_CUBES,
+        (num, BLUE) => num <= BLUE_CUBES,
+        _ => false,
+    }
 }
 
 fn get_max_number<'a>(all_pulls_of_same_color: impl Iterator<Item = (u64, &'a str)>) -> Answer {
