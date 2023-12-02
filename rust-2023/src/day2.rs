@@ -2,6 +2,10 @@ use aoc_utils::{input_to_trimmed_lines, test_day, AdventError, Answer, Day};
 
 pub struct Day2;
 
+const RED: &str = "red";
+const GREEN: &str = "green";
+const BLUE: &str = "blue";
+
 impl Day for Day2 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
         let red_cubes = 12;
@@ -23,16 +27,17 @@ impl Day for Day2 {
 
                 let rounds = label_and_game.next().unwrap().split(';');
 
-                let all_rounds_valid = rounds
-                    .map(|round| round.split(',').map(parse_round).collect::<Vec<_>>())
-                    .all(|round| {
-                        round.iter().all(|(num, color)| match (*color, num) {
-                            ("red", num) if *num > red_cubes => false,
-                            ("green", num) if *num > green_cubes => false,
-                            ("blue", num) if *num > blue_cubes => false,
-                            _ => true,
-                        })
-                    });
+                let all_rounds_valid =
+                    rounds
+                        .map(|round| round.split(',').map(parse_round))
+                        .all(|round| {
+                            round.clone().all(|(num, color)| match (num, color) {
+                                (num, RED) => num <= red_cubes,
+                                (num, GREEN) => num <= green_cubes,
+                                (num, BLUE) => num <= blue_cubes,
+                                _ => false,
+                            })
+                        });
 
                 if all_rounds_valid {
                     Some(game_num)
@@ -50,26 +55,24 @@ impl Day for Day2 {
             .map(|line| {
                 let mut label_and_game = line.split(':');
 
-                let rounds = label_and_game.next().unwrap().split(';');
+                let rounds = label_and_game.nth(1).unwrap().split(';');
                 let all_rounds = rounds.map(|round| round.split(',').map(parse_round));
 
                 let all_reds = all_rounds
                     .clone()
-                    .flat_map(|round| round.filter(|(_, color)| *color == "red"));
+                    .flat_map(|round| round.filter(|(_, color)| *color == RED));
                 let all_greens = all_rounds
                     .clone()
-                    .flat_map(|round| round.filter(|(_, color)| *color == "green"));
+                    .flat_map(|round| round.filter(|(_, color)| *color == GREEN));
                 let all_blues = all_rounds
                     .clone()
-                    .flat_map(|round| round.filter(|(_, color)| *color == "blue"));
+                    .flat_map(|round| round.filter(|(_, color)| *color == BLUE));
 
-                let max_red = all_reds.max_by_key(|pull| pull.0);
-                let max_green = all_greens.max_by_key(|pull| pull.0);
-                let max_blue = all_blues.max_by_key(|pull| pull.0);
+                let max_red = get_max_number(all_reds);
+                let max_green = get_max_number(all_greens);
+                let max_blue = get_max_number(all_blues);
 
-                max_red.unwrap_or((1, "red")).0
-                    * max_green.unwrap_or((1, "green")).0
-                    * max_blue.unwrap_or((1, "blue")).0
+                max_red * max_green * max_blue
             })
             .sum();
 
@@ -78,10 +81,16 @@ impl Day for Day2 {
 }
 
 fn parse_round(round: &str) -> (u64, &str) {
-    let mut stuff = round.split_whitespace();
-    let num = stuff.next().unwrap().parse::<u64>().unwrap();
-    let color = stuff.next().unwrap();
+    let mut pull = round.split_whitespace();
+    let num = pull.next().unwrap().parse::<u64>().unwrap();
+    let color = pull.next().unwrap();
     (num, color)
+}
+
+fn get_max_number<'a>(all_pulls_of_same_color: impl Iterator<Item = (u64, &'a str)>) -> Answer {
+    all_pulls_of_same_color
+        .max_by_key(|pull| pull.0)
+        .map_or(1, |pull| pull.0)
 }
 
 test_day!(
