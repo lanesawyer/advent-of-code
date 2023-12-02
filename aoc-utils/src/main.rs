@@ -7,6 +7,8 @@ use reqwest::{
     header::{COOKIE, USER_AGENT},
 };
 
+const INPUT_FOLDER : &str = "./input";
+
 pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
 
@@ -17,10 +19,11 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Calculate the current year
     let current_year = 1970 + current_time.as_secs() as i64 / (365 * 24 * 60 * 60);
+    let day = 1;
 
-    if !Path::new(&get_input_folder_path()).exists() {
+    if !Path::new(&get_puzzle_input_path(day)).exists() {
         println!("Downloading puzzle input for Day {}, {}", 1, current_year);
-        let puzzle_input = download_puzzle_input(current_year.try_into()?, 1)?;
+        let puzzle_input = download_puzzle_input(current_year.try_into()?, day.try_into()?)?;
         save_puzzle_input(1, puzzle_input)?;
     } else {
         println!(
@@ -33,7 +36,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn download_puzzle_input(year: isize, day: isize) -> Result<String, Box<dyn std::error::Error>> {
-    let token = std::env::var("AOC_AUTH_TOKEN")
+    let token: String = std::env::var("AOC_AUTH_TOKEN")
         .expect("AOC_AUTH_TOKEN must be set. Get it from your browser's cookies!");
 
     let client = ClientBuilder::new().build()?;
@@ -53,11 +56,9 @@ fn download_puzzle_input(year: isize, day: isize) -> Result<String, Box<dyn std:
 }
 
 fn save_puzzle_input(day: usize, puzzle_input: String) -> Result<(), Box<dyn std::error::Error>> {
-    let folder_path = get_input_folder_path();
-
-    fs::create_dir_all(folder_path.clone())?;
+    fs::create_dir_all(INPUT_FOLDER)?;
     fs::write(
-        format!("{}/day{}.txt", folder_path.clone(), day),
+        get_puzzle_input_path(day),
         puzzle_input,
     )
     .expect("File could not be saved");
@@ -65,6 +66,6 @@ fn save_puzzle_input(day: usize, puzzle_input: String) -> Result<(), Box<dyn std
     Ok(())
 }
 
-fn get_input_folder_path() -> String {
-    format!("{}/input", env!("CARGO_MANIFEST_DIR"))
+fn get_puzzle_input_path(day: usize) -> String {
+    format!("{}/day{}.txt", INPUT_FOLDER, day)
 }
