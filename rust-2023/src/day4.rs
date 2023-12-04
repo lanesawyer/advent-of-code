@@ -1,13 +1,69 @@
-use aoc_utils::{test_day, AdventError, Answer, Day};
+use aoc_utils::{input_to_trimmed_lines, test_day, AdventError, Answer, Day};
 
 pub struct Day4;
 
 impl Day for Day4 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
-        Ok(1)
+        let answer: Answer = input_to_trimmed_lines(input)
+            .map(|line| {
+                let mut numbers = line.split(':').nth(1).unwrap().split('|');
+                let input: Vec<&str> = numbers
+                    .next()
+                    .unwrap()
+                    .split_whitespace()
+                    .collect();
+                let winning_numbers: Vec<&str> = numbers
+                    .next()
+                    .unwrap()
+                    .split_whitespace()
+                    .collect();
+
+                let matches: u32 = input
+                    .iter()
+                    .filter(|input| winning_numbers.contains(input))
+                    .count()
+                    .try_into()
+                    .unwrap();
+
+                match matches {
+                    m if m > 1 => {
+                        2_u64.pow(m -1)
+                    }
+                    1 => 1,
+                    _ => 0,
+                }
+            })
+            .sum();
+        Ok(answer)
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
+        let answer: Answer = input_to_trimmed_lines(input)
+            .map(|line| {
+                let mut numbers = line.split(':').nth(1).unwrap().split('|');
+                let input: Vec<&str> = numbers
+                    .next()
+                    .unwrap()
+                    .split_whitespace()
+                    .collect();
+                let winning_numbers: Vec<&str> = numbers
+                    .next()
+                    .unwrap()
+                    .split_whitespace()
+                    .collect();
+
+                let matches: u32 = input
+                    .iter()
+                    .filter(|input| winning_numbers.contains(input))
+                    .count()
+                    .try_into()
+                    .unwrap();
+
+                // Look at the next {matches} number of cards
+
+                1
+            })
+            .sum();
         Ok(2)
     }
 }

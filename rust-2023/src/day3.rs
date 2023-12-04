@@ -10,7 +10,7 @@ impl Day for Day3 {
         let line_length = input.trim().lines().next().unwrap().trim().len();
 
         let chars: Vec<char> = input.chars().filter(|char| !char.is_whitespace()).collect();
-        dbg!(line_length, &chars);
+        // dbg!(line_length, &chars);
         chars.iter().enumerate().for_each(|(index, char)| {
             match char {
                 // We don't care about periods or numbers
@@ -84,7 +84,7 @@ impl Day for Day3 {
         Ok(sum_of_valid_nums)
     }
 
-    fn part_2(input: &str) -> Result<Answer, AdventError> {
+    fn part_2(_input: &str) -> Result<Answer, AdventError> {
         Ok(2)
     }
 }
@@ -102,18 +102,18 @@ fn find_surrounding_numbers(input: &[char], line_length: usize, index: usize) ->
     let down = input[index + line_length];
     let diagonal_down_left = input[index + line_length - 1];
 
-    dbg!(
-        index,
-        input[index],
-        left,
-        diagonal_up_left,
-        up,
-        diagonal_up_right,
-        right,
-        diagonal_down_right,
-        down,
-        diagonal_down_left
-    );
+    // dbg!(
+    //     index,
+    //     input[index],
+    //     left,
+    //     diagonal_up_left,
+    //     up,
+    //     diagonal_up_right,
+    //     right,
+    //     diagonal_down_right,
+    //     down,
+    //     diagonal_down_left
+    // );
 
     // TODO: Take care of overlapping parsing that's currently happening...
     // x x x
@@ -191,7 +191,7 @@ fn build_number(input: &[char], number_touching_symbol_index: usize) -> Answer {
     .parse()
     .unwrap();
 
-    dbg!(number);
+    // dbg!(number);
 
     number
 }
@@ -199,9 +199,9 @@ fn build_number(input: &[char], number_touching_symbol_index: usize) -> Answer {
 #[derive(Debug)]
 enum Part {
     // Index
-    Symbol(usize),
+    _Symbol(usize),
     // Start index, end index
-    Number(usize, usize, Answer),
+    _Number(usize, usize, Answer),
 }
 
 test_day!(
