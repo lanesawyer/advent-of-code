@@ -7,16 +7,9 @@ impl Day for Day4 {
         let answer: Answer = input_to_trimmed_lines(input)
             .map(|line| {
                 let mut numbers = line.split(':').nth(1).unwrap().split('|');
-                let input: Vec<&str> = numbers
-                    .next()
-                    .unwrap()
-                    .split_whitespace()
-                    .collect();
-                let winning_numbers: Vec<&str> = numbers
-                    .next()
-                    .unwrap()
-                    .split_whitespace()
-                    .collect();
+                let input: Vec<&str> = numbers.next().unwrap().split_whitespace().collect();
+                let winning_numbers: Vec<&str> =
+                    numbers.next().unwrap().split_whitespace().collect();
 
                 let matches: u32 = input
                     .iter()
@@ -26,9 +19,7 @@ impl Day for Day4 {
                     .unwrap();
 
                 match matches {
-                    m if m > 1 => {
-                        2_u64.pow(m -1)
-                    }
+                    m if m > 1 => 2_u64.pow(m - 1),
                     1 => 1,
                     _ => 0,
                 }
@@ -38,40 +29,50 @@ impl Day for Day4 {
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
-        let answer: Answer = input_to_trimmed_lines(input)
+        let card_matches: Vec<usize> = input_to_trimmed_lines(input)
             .map(|line| {
                 let mut numbers = line.split(':').nth(1).unwrap().split('|');
-                let input: Vec<&str> = numbers
-                    .next()
-                    .unwrap()
-                    .split_whitespace()
-                    .collect();
-                let winning_numbers: Vec<&str> = numbers
-                    .next()
-                    .unwrap()
-                    .split_whitespace()
-                    .collect();
+                let input: Vec<&str> = numbers.next().unwrap().split_whitespace().collect();
+                let winning_numbers: Vec<&str> =
+                    numbers.next().unwrap().split_whitespace().collect();
 
-                let matches: u32 = input
+                let matches: usize = input
                     .iter()
                     .filter(|input| winning_numbers.contains(input))
-                    .count()
-                    .try_into()
-                    .unwrap();
+                    .count();
 
-                // Look at the next {matches} number of cards
-
-                1
+                matches
             })
-            .sum();
-        Ok(2)
+            .collect();
+
+        let total_card_matches = card_matches
+            .iter()
+            .enumerate()
+            .map(|(index, card_match)| {
+                if index >= card_matches.len() {
+                    return 0;
+                }
+                // FIX THIS
+                let next_cards = &card_matches[index..(index + *card_match)]
+                    .iter()
+                    .filter(|card| card > &&0)
+                    .collect::<Vec<&usize>>()
+                    .len();
+                dbg!(next_cards);
+                *next_cards
+            })
+            .sum::<usize>()
+            .try_into()
+            .unwrap();
+
+        Ok(total_card_matches)
     }
 }
 
 test_day!(
     Day4,
     13,
-    0,
+    30,
     r#"
         Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
         Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
