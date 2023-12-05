@@ -58,7 +58,7 @@ impl Day for Day4 {
                     .filter(|card| card > &&0)
                     .collect::<Vec<&usize>>()
                     .len();
-                dbg!(next_cards);
+                // dbg!(next_cards);
                 *next_cards
             })
             .sum::<usize>()
