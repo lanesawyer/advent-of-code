@@ -16,8 +16,8 @@ impl Day for Day6 {
             .zip(current_record_distances)
             .map(|(time, current_record_distance)| {
                 let winning_button_presses: Vec<Answer> = (0..time)
-                    .filter(|button_press| {
-                        ways_to_win(time, *button_press, current_record_distance)
+                    .filter(|&button_press| {
+                        ways_to_win(time, button_press, current_record_distance)
                     })
                     .collect();
 
@@ -39,7 +39,7 @@ impl Day for Day6 {
         let current_record_distance = parse_race(&distances_line);
 
         let ways_to_win: Vec<Answer> = (0..time)
-            .filter(|button_press| ways_to_win(time, *button_press, current_record_distance))
+            .filter(|&button_press| ways_to_win(time, button_press, current_record_distance))
             .collect();
 
         Ok(ways_to_win.len().try_into().unwrap())
@@ -51,7 +51,7 @@ fn parse_races(line: &str) -> impl Iterator<Item = Answer> + '_ {
         .nth(1)
         .unwrap()
         .split_whitespace()
-        .filter(|num| !num.is_empty())
+        .filter(|potential_numbers| !potential_numbers.is_empty())
         .filter_map(|num| num.parse::<Answer>().ok())
 }
 
@@ -60,16 +60,16 @@ fn parse_race(line: &str) -> Answer {
         .nth(1)
         .unwrap()
         .split_whitespace()
-        .filter(|num| !num.is_empty())
+        .filter(|potential_numbers| !potential_numbers.is_empty())
         .collect::<String>()
         .parse()
         .unwrap()
 }
 
-fn ways_to_win(time: Answer, button_press: Answer, current_distance_record: Answer) -> bool {
+fn ways_to_win(time: Answer, button_press: Answer, current_record_distance: Answer) -> bool {
     let remaining_time = time - button_press;
     let distance_to_check = button_press * remaining_time;
-    distance_to_check > current_distance_record
+    distance_to_check > current_record_distance
 }
 
 test_day!(
