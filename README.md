@@ -15,11 +15,15 @@ I decided to do the 2020, 2021, 2022, 2023 challenge using Rust. I don't use Rus
 - TODO: Explain the basics
 
 ### Needed Updates
-- Macro for main that sets up the output and runs the days
-- Remove deprecated read_input function in 2021
+#### aoc-utils
 - More helper functions for common input parsing needs
-- Instructions on the CLI for running a specific day
 - Run a single day instead of all of them
-- Set up a workspace so I can have all years depend on workspace dependencies
-- Publish helper crates to crates.io
+- Instructions on how to use the CLI tooling
 - Submission of answers (and rate limiting so I don't accidentally spam the server)
+- Publish helper crates to crates.io
+- More CLI options (like setting the `input` storage directory)
+- Festive ASCII art
+
+#### Problem Solving Code
+- Remove deprecated read_input function in 2021's code
+- Set up a workspace so I can have all years depend on workspace dependencies, which makes me feel better about pulling in a variety of helpful crates

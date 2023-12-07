@@ -35,7 +35,7 @@ pub fn read_input(day: u8) -> Result<String, AdventError> {
     Ok(input)
 }
 
-// Turns an input string into a iterator with trimmed lines
+/// Turns an input string into a iterator with trimmed lines
 pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> + '_ {
     input
         .lines()

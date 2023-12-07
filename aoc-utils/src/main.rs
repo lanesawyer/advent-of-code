@@ -1,3 +1,4 @@
+use std::ops::RangeInclusive;
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::{fs, path::Path};
 
@@ -9,6 +10,7 @@ use reqwest::{
 };
 
 const INPUT_FOLDER: &str = "./input";
+const DAY_RANGE: RangeInclusive<isize> = 1..=25;
 
 /// Utility for Advent of Code that downloads the puzzle input for a given year and day
 #[derive(Parser, Debug)]
@@ -18,8 +20,9 @@ struct Args {
     #[arg(short, long)]
     year: Option<isize>,
 
+    // TODO: Why does validation not work
     /// Day to download puzzle input for
-    #[arg(short, long)]
+    #[arg(short, long, value_parser=day_in_range)]
     day: isize,
 }
 
@@ -27,6 +30,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
     let args = Args::parse();
 
+    print!("port {}", args.day);
     // TODO: Project/day setup stuff, like .gitignore the `input` folder,
     // make a new file for the code of a new day, etc.
 
@@ -45,6 +49,19 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     Ok(())
+}
+
+fn day_in_range(s: &str) -> Result<isize, String> {
+    let day: isize = s.parse().map_err(|_| format!("`{s}` isn't a day"))?;
+    if DAY_RANGE.contains(&day) {
+        Ok(day)
+    } else {
+        Err(format!(
+            "day not in range {}-{}",
+            DAY_RANGE.start(),
+            DAY_RANGE.end()
+        ))
+    }
 }
 
 // TODO: Report download error if it doesn't succeed. For example, a day that isn't released yet
