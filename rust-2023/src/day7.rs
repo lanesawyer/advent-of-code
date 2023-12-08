@@ -29,6 +29,8 @@ impl Day for Day7 {
     // 249754968
     // 251637333
     // 251859926
+    // 251145497
+    // 251170691
     // SOOO the problem is that I'm not handling the jokers correctly. Just doing the highest counted thing
     // probably isn't _always_ the best move. I dk. Need to take a break.
     fn part_2(input: &str) -> Result<Answer, AdventError> {
@@ -192,48 +194,80 @@ fn rank_hand_joker_style(hand: &str) -> usize {
         char_count
     });
 
-    let (highest_ranking_char, count) = character_counts
-        .iter()
-        .max_by(|&(key1, value1), &(key2, value2)| {
-            if value1 != value2 {
-                return value1.cmp(value2);
-            }
-            rank_card_joker_style(key1, key2)
-        })
-        .unwrap();
-    let unjokered_hand = hand.replace('J', &highest_ranking_char.to_string());
-
-    let unjokered_character_counts =
-        unjokered_hand
-            .chars()
-            .fold(HashMap::new(), |mut char_count, ch| {
-                *char_count.entry(ch).or_insert(0) += 1;
-                char_count
-            });
-
-    let unjokered_counts: Vec<usize> = unjokered_character_counts.values().cloned().collect();
     let counts: Vec<usize> = character_counts.values().cloned().collect();
 
-    if hand.contains('J') && counts.len() == 3 {
-        println!("{} {} {}", highest_ranking_char, hand, unjokered_hand);
-    }
-
-    if unjokered_counts.contains(&5) {
+    let rank = if counts.contains(&5) {
         7
-    } else if unjokered_counts.contains(&4) {
+    } else if counts.contains(&4) {
         6
-    } else if unjokered_counts.contains(&3) && unjokered_counts.contains(&2) {
+    } else if counts.contains(&3) && counts.contains(&2) {
         5
-    } else if unjokered_counts.contains(&3) {
+    } else if counts.contains(&3) {
         4
-    } else if unjokered_counts.contains(&2) && unjokered_counts.len() == 3 {
+    } else if counts.contains(&2) && counts.len() == 3 {
         3
-    } else if unjokered_counts.contains(&2) {
+    } else if counts.contains(&2) {
         2
     } else {
         1
+    };
+
+    if rank + hand.chars().filter(|&ch| ch == 'J').count() > 7 {
+        7
+    } else {
+        rank + hand.chars().filter(|&ch| ch == 'J').count()
     }
+    // Thought that I could just "upgrade" based on how many jokers, since it'll always make a hand better
+    // rank + hand.chars().filter(|&ch| ch == 'J').count()
 }
+// fn rank_hand_joker_style(hand: &str) -> usize {
+//     let character_counts = hand.chars().fold(HashMap::new(), |mut char_count, ch| {
+//         *char_count.entry(ch).or_insert(0) += 1;
+//         char_count
+//     });
+
+//     let (highest_ranking_char, count) = character_counts
+//         .iter()
+//         .max_by(|&(key1, value1), &(key2, value2)| {
+//             if value1 != value2 {
+//                 return value1.cmp(value2);
+//             }
+//             rank_card_joker_style(key1, key2)
+//         })
+//         .unwrap();
+//     let unjokered_hand = hand.replace('J', &highest_ranking_char.to_string());
+
+//     let unjokered_character_counts =
+//         unjokered_hand
+//             .chars()
+//             .fold(HashMap::new(), |mut char_count, ch| {
+//                 *char_count.entry(ch).or_insert(0) += 1;
+//                 char_count
+//             });
+
+//     let unjokered_counts: Vec<usize> = unjokered_character_counts.values().cloned().collect();
+//     let counts: Vec<usize> = character_counts.values().cloned().collect();
+
+//     if hand.contains('J') && counts.len() == 3 {
+//         println!("{} {} {}", highest_ranking_char, hand, unjokered_hand);
+//     }
+
+//     if unjokered_counts.contains(&5) {
+//         7
+//     } else if unjokered_counts.contains(&4) {
+//         6
+//     } else if unjokered_counts.contains(&3) && unjokered_counts.contains(&2) {
+//         5
+//     } else if unjokered_counts.contains(&3) {
+//         4
+//     } else if unjokered_counts.contains(&2) && unjokered_counts.len() == 3 {
+//         3
+//     } else if unjokered_counts.contains(&2) {
+//         2
+//     } else {
+//         1
+//     }
+// }
 // fn rank_hand_joker_style(hand: &str) -> usize {
 //     let character_counts = hand.chars().fold(HashMap::new(), |mut char_count, ch| {
 //         *char_count.entry(ch).or_insert(0) += 1;
@@ -301,8 +335,6 @@ fn rank_hand_joker_style(hand: &str) -> usize {
 fn rank_card_joker_style(card: &char, other_card: &char) -> Ordering {
     match (card, other_card) {
         (card, other_card) if card == other_card => Ordering::Equal,
-        ('J', _) => Ordering::Less,
-        (_, 'J') => Ordering::Greater,
         ('A', _) => Ordering::Greater,
         (_, 'A') => Ordering::Less,
         ('K', _) => Ordering::Greater,
@@ -311,6 +343,8 @@ fn rank_card_joker_style(card: &char, other_card: &char) -> Ordering {
         (_, 'Q') => Ordering::Less,
         ('T', _) => Ordering::Greater,
         (_, 'T') => Ordering::Less,
+        ('J', _) => Ordering::Less,
+        (_, 'J') => Ordering::Greater,
         // Once we're in the numbers, we can just directly compare
         (num, other_num) => num.cmp(other_num),
     }
