@@ -1,12 +1,12 @@
 use aoc_utils::{run_day, AdventError};
 
-use crate::day1::Day1;
-use crate::day2::Day2;
-use crate::day3::Day3;
-use crate::day4::Day4;
-use crate::day5::Day5;
-use crate::day6::Day6;
-use crate::day7::Day7;
+// use crate::day1::Day1;
+// use crate::day2::Day2;
+// use crate::day3::Day3;
+// use crate::day4::Day4;
+// use crate::day5::Day5;
+// use crate::day6::Day6;
+// use crate::day7::Day7;
 use crate::day8::Day8;
 
 mod day1;
