@@ -14,7 +14,8 @@ I decided to do the 2020, 2021, 2022, 2023, and 2024 challenge using Rust. I don
 ### How to Use the `aoc-utils` Crate
 - Install the utils crate to your system by running `cargo install --path aoc-utils` from the root of the repository.
 - Get the session token by inspecting an authenticated request to the Advent of Code website. There's not currently an easier way that I know, unfortunately.
-- Use the `aoc-utils` command as you're developing your solutions!
+- Place that session token in a `.env` file at the root of the repository with the key `AOC_SESSION_TOKEN`.
+- Use the `aoc-utils` command as you're developing your solutions! See what's available by running `aoc-utils --help`.
 
 ### Needed Updates
 #### aoc-utils

@@ -1,7 +1,7 @@
 use std::ops::RangeInclusive;
-use std::time::{SystemTime, UNIX_EPOCH};
 use std::{fs, path::Path};
 
+use chrono::{Datelike, Local};
 use clap::Parser;
 use dotenv::dotenv;
 use reqwest::{
@@ -9,20 +9,27 @@ use reqwest::{
     header::{COOKIE, USER_AGENT},
 };
 
-const INPUT_FOLDER: &str = "./input";
-const DAY_RANGE: RangeInclusive<isize> = 1..=25;
+const DEFAULT_INPUT_FOLDER: &str = "./input";
+const DAY_RANGE: RangeInclusive<u32> = 1..=25;
 
 /// Utility for Advent of Code that downloads the puzzle input for a given year and day
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    // Year to download puzzle input for, defaults to current year
-    #[arg(short, long)]
-    year: Option<isize>,
+    /// Year to download puzzle input for.
+    /// Defaults to current year.
+    #[arg(short, long, default_value_t=get_current_year())]
+    year: i32,
 
-    /// Day to download puzzle input for
-    #[arg(short, long, value_parser=day_in_range)]
-    day: isize,
+    /// Day to download puzzle input for.
+    /// Defaults to current day.
+    #[arg(short, long, value_parser=day_in_range, default_value_t=get_current_day())]
+    day: u32,
+
+    /// Location to save puzzle input files.
+    /// Defaults to `./input`.
+    #[arg(short, long, default_value = DEFAULT_INPUT_FOLDER)]
+    input_folder: String,
 }
 
 pub fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -33,16 +40,15 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     // TODO: Project/day setup stuff, like .gitignore the `input` folder,
     // make a new file for the code of a new day, etc.
 
-    // TODO: Default to current day if not provided
-    // TODO: Can I do the get_current_year default with Clap?
     // TODO: Download all released days
-    let year = args.year.unwrap_or(get_current_year());
+    let year = args.year;
     let day = args.day;
+    let input_folder = args.input_folder;
 
-    if !Path::new(&get_puzzle_input_path(day)).exists() {
+    if !Path::new(&get_puzzle_input_path(&input_folder, day)).exists() {
         println!("Downloading puzzle input for Day {}, {}", day, year);
         let puzzle_input = download_puzzle_input(year, day)?;
-        save_puzzle_input(day, puzzle_input)?;
+        save_puzzle_input(&input_folder, day, puzzle_input)?;
     } else {
         println!("Puzzle input already downloaded for Day {}, {}", day, year);
     }
@@ -50,8 +56,8 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn day_in_range(s: &str) -> Result<isize, String> {
-    let day: isize = s.parse().map_err(|_| format!("`{s}` isn't a number"))?;
+fn day_in_range(s: &str) -> Result<u32, String> {
+    let day: u32 = s.parse().map_err(|_| format!("`{s}` isn't a number"))?;
     if DAY_RANGE.contains(&day) {
         Ok(day)
     } else {
@@ -63,7 +69,7 @@ fn day_in_range(s: &str) -> Result<isize, String> {
     }
 }
 
-fn download_puzzle_input(year: isize, day: isize) -> Result<String, Box<dyn std::error::Error>> {
+fn download_puzzle_input(year: i32, day: u32) -> Result<String, Box<dyn std::error::Error>> {
     let token: String = std::env::var("AOC_AUTH_TOKEN")
         .expect("AOC_AUTH_TOKEN must be set. Get it from your browser's cookies!");
 
@@ -90,23 +96,21 @@ fn download_puzzle_input(year: isize, day: isize) -> Result<String, Box<dyn std:
     Ok(puzzle_input)
 }
 
-fn save_puzzle_input(day: isize, puzzle_input: String) -> Result<(), Box<dyn std::error::Error>> {
-    fs::create_dir_all(INPUT_FOLDER)?;
-    fs::write(get_puzzle_input_path(day), puzzle_input).expect("File could not be saved");
+fn save_puzzle_input(input_folder: &String, day: u32, puzzle_input: String) -> Result<(), Box<dyn std::error::Error>> {
+    fs::create_dir_all(input_folder)?;
+    fs::write(get_puzzle_input_path(input_folder, day), puzzle_input).expect("File could not be saved");
 
     Ok(())
 }
 
-fn get_puzzle_input_path(day: isize) -> String {
-    format!("{}/day{}.txt", INPUT_FOLDER, day)
+fn get_puzzle_input_path(input_folder: &String, day: u32) -> String {
+    format!("{}/day{}.txt", input_folder, day)
 }
 
-fn get_current_year() -> isize {
-    // Get the current duration since the UNIX epoch
-    let current_time = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("Failed to get current time");
+fn get_current_day() -> u32 {
+    Local::now().day()
+}
 
-    // Calculate the current year
-    1970 + current_time.as_secs() as isize / (365 * 24 * 60 * 60)
+fn get_current_year() -> i32 {
+    Local::now().year()
 }
