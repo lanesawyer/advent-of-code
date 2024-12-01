@@ -20,7 +20,6 @@ struct Args {
     #[arg(short, long)]
     year: Option<isize>,
 
-    // TODO: Why does validation not work
     /// Day to download puzzle input for
     #[arg(short, long, value_parser=day_in_range)]
     day: isize,
@@ -30,7 +29,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
     let args = Args::parse();
 
-    print!("Day {}", args.day);
+    println!("Day {}", args.day);
     // TODO: Project/day setup stuff, like .gitignore the `input` folder,
     // make a new file for the code of a new day, etc.
 
@@ -52,27 +51,25 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn day_in_range(s: &str) -> Result<isize, String> {
-    let day: isize = s.parse().map_err(|_| format!("`{s}` isn't a day"))?;
+    let day: isize = s.parse().map_err(|_| format!("`{s}` isn't a number"))?;
     if DAY_RANGE.contains(&day) {
         Ok(day)
     } else {
         Err(format!(
-            "day not in range {}-{}",
+            "Day not in range {}-{}",
             DAY_RANGE.start(),
             DAY_RANGE.end()
         ))
     }
 }
 
-// TODO: Report download error if it doesn't succeed. For example, a day that isn't released yet
-// should let you know that it's not available.
 fn download_puzzle_input(year: isize, day: isize) -> Result<String, Box<dyn std::error::Error>> {
     let token: String = std::env::var("AOC_AUTH_TOKEN")
         .expect("AOC_AUTH_TOKEN must be set. Get it from your browser's cookies!");
 
     let client = ClientBuilder::new().build()?;
 
-    let puzzle_input = client
+    let puzzle_input_response = client
         .get(format!(
             "https://adventofcode.com/{}/day/{}/input",
             year, day
@@ -80,9 +77,16 @@ fn download_puzzle_input(year: isize, day: isize) -> Result<String, Box<dyn std:
         // TODO: Use proper value for user agent (should be contact info of user, get from Cargo.toml or something)
         .header(USER_AGENT, "lanesawyer/aoc-utils")
         .header(COOKIE, format!("session={}", token))
-        .send()?
-        .text()?;
+        .send()?;
 
+    if reqwest::StatusCode::NOT_FOUND == puzzle_input_response.status() {
+        return Err(format!("Day {} is not available yet", day).into());
+    } else if !puzzle_input_response.status().is_success() {
+        return Err(format!("Failed to download puzzle input: {}", puzzle_input_response.status()).into());
+    }
+
+    let puzzle_input = puzzle_input_response.text()?;
+    
     Ok(puzzle_input)
 }
 

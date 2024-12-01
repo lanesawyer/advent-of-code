@@ -11,8 +11,10 @@ I decided to do the 2020, 2021, 2022, 2023, and 2024 challenge using Rust. I don
 - `cargo run` will run a CLI program that outputs info for each of the challenges
 - `cargo test` will run all the unit tests
 
-### How to Write Days
-- TODO: Explain the basics
+### How to Use the `aoc-utils` Crate
+- Install the utils crate to your system by running `cargo install --path aoc-utils` from the root of the repository.
+- Get the session token by inspecting an authenticated request to the Advent of Code website. There's not currently an easier way that I know, unfortunately.
+- Use the `aoc-utils` command as you're developing your solutions!
 
 ### Needed Updates
 #### aoc-utils
