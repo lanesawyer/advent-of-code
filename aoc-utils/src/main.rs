@@ -30,7 +30,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
     let args = Args::parse();
 
-    print!("port {}", args.day);
+    print!("Day {}", args.day);
     // TODO: Project/day setup stuff, like .gitignore the `input` folder,
     // make a new file for the code of a new day, etc.
 
