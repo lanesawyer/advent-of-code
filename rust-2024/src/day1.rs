@@ -20,17 +20,21 @@ impl Day for Day1 {
         left_list.sort();
         right_list.sort();
 
-        let distances: u32 = left_list.iter().enumerate().map(|(index, left_item)| {
-            let right_item = right_list.get(index).unwrap();
+        let distances: u32 = left_list
+            .iter()
+            .enumerate()
+            .map(|(index, left_item)| {
+                let right_item = right_list.get(index).unwrap();
 
-            left_item.abs_diff(*right_item)
-        }).sum();
+                left_item.abs_diff(*right_item)
+            })
+            .sum();
 
         Ok(distances.into())
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
-                let mut left_list: Vec<u32> = vec![];
+        let mut left_list: Vec<u32> = vec![];
         let mut right_list_count: HashMap<u32, u32> = HashMap::new();
 
         input_to_trimmed_lines(input).for_each(|line| {
@@ -42,11 +46,14 @@ impl Day for Day1 {
             right_list_count.insert(right, right_list_count.get(&right).unwrap_or(&0) + 1);
         });
 
-        let similarity_score: u32 = left_list.iter().map(|left_item| {
-            let times_seen = right_list_count.get(left_item).unwrap_or(&0);
+        let similarity_score: u32 = left_list
+            .iter()
+            .map(|left_item| {
+                let times_seen = right_list_count.get(left_item).unwrap_or(&0);
 
-            left_item * times_seen
-        }).sum();
+                left_item * times_seen
+            })
+            .sum();
 
         Ok(similarity_score.into())
     }
