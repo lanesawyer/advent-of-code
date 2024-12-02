@@ -5,7 +5,7 @@ pub struct Day2;
 impl Day for Day2 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
         let total_safe = input_to_trimmed_lines(input)
-            .map(|line| is_safe_checker(line, None))
+            .map(|line| is_safe_checker(&line, None))
             .filter(|is_safe| *is_safe)
             .count();
         Ok(total_safe as u64)
@@ -14,7 +14,7 @@ impl Day for Day2 {
     fn part_2(input: &str) -> Result<Answer, AdventError> {
         let total_safe = input_to_trimmed_lines(input)
             .map(|line| {
-                let line_passed_with_none_removed = is_safe_checker(line.clone(), None);
+                let line_passed_with_none_removed = is_safe_checker(&line, None);
                 if line_passed_with_none_removed {
                     return true;
                 }
@@ -22,7 +22,7 @@ impl Day for Day2 {
                 // If it didn't fail on the first pass, go through all the possible indexes.
                 // If any of them pass once an item is removed, then it's safe!
                 (0..line.split_whitespace().count())
-                    .any(|index| is_safe_checker(line.clone(), Some(index)))
+                    .any(|index| is_safe_checker(&line, Some(index)))
             })
             .filter(|is_safe| *is_safe)
             .count();
@@ -31,7 +31,7 @@ impl Day for Day2 {
     }
 }
 
-fn is_safe_checker(line: String, index_to_skip: Option<usize>) -> bool {
+fn is_safe_checker(line: &str, index_to_skip: Option<usize>) -> bool {
     let mut is_safe = true;
     let mut is_increasing = false;
     let mut is_decreasing = false;
