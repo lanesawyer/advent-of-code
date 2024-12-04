@@ -7,7 +7,11 @@ pub struct Day5;
 
 impl Day for Day5 {
     fn part_1(input: &str) -> Result<Answer, AdventError> {
-        Ok(input.split_whitespace().map(calculate_seat_number).max().unwrap())
+        Ok(input
+            .split_whitespace()
+            .map(calculate_seat_number)
+            .max()
+            .unwrap())
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
@@ -19,7 +23,9 @@ impl Day for Day5 {
         let min = *seats.iter().min().unwrap();
         let max = *seats.iter().max().unwrap();
 
-        Ok((min..=max).find(|expected| !seats.contains(expected)).unwrap())
+        Ok((min..=max)
+            .find(|expected| !seats.contains(expected))
+            .unwrap())
     }
 }
 

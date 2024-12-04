@@ -17,7 +17,7 @@ impl Position {
 
     fn trailing_position(self, direction: &str) -> Self {
         let trailing_x = if self.x < 0 { 1 } else { -1 };
-        let trailing_y = if self.y < 0 { 1 } else { - 1 };
+        let trailing_y = if self.y < 0 { 1 } else { -1 };
         match direction {
             "R" => Position::new(self.x + trailing_x, self.y),
             "L" => Position::new(self.x - trailing_x, self.y),
@@ -84,12 +84,12 @@ impl Day for Day9 {
                     // || (x_distance < 0 && y_distance < -1)
                     // right up
                     || (!(0..1).contains(&x_distance) && y_distance > 0);
-                    // left up
-                    // || (x_distance < -1 && y_distance > 0)
-                    // right down
-                    // || (x_distance > 1 && y_distance < 0)
-                    // left down
-                    // || (x_distance < -1 && y_distance > 0);
+                // left up
+                // || (x_distance < -1 && y_distance > 0)
+                // right down
+                // || (x_distance > 1 && y_distance < 0)
+                // left down
+                // || (x_distance < -1 && y_distance > 0);
 
                 if should_move_tail {
                     tail_position = head_position.trailing_position(direction);

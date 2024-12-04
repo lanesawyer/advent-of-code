@@ -88,17 +88,26 @@ fn download_puzzle_input(year: i32, day: u32) -> Result<String, Box<dyn std::err
     if reqwest::StatusCode::NOT_FOUND == puzzle_input_response.status() {
         return Err(format!("Day {} is not available yet", day).into());
     } else if !puzzle_input_response.status().is_success() {
-        return Err(format!("Failed to download puzzle input: {}", puzzle_input_response.status()).into());
+        return Err(format!(
+            "Failed to download puzzle input: {}",
+            puzzle_input_response.status()
+        )
+        .into());
     }
 
     let puzzle_input = puzzle_input_response.text()?;
-    
+
     Ok(puzzle_input)
 }
 
-fn save_puzzle_input(input_folder: &String, day: u32, puzzle_input: String) -> Result<(), Box<dyn std::error::Error>> {
+fn save_puzzle_input(
+    input_folder: &String,
+    day: u32,
+    puzzle_input: String,
+) -> Result<(), Box<dyn std::error::Error>> {
     fs::create_dir_all(input_folder)?;
-    fs::write(get_puzzle_input_path(input_folder, day), puzzle_input).expect("File could not be saved");
+    fs::write(get_puzzle_input_path(input_folder, day), puzzle_input)
+        .expect("File could not be saved");
 
     Ok(())
 }

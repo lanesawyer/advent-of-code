@@ -90,7 +90,7 @@ macro_rules! run_day {
 #[macro_export]
 macro_rules! test_day {
     // Single test input for both parts
-    ($day:ident, $answer1:expr, $answer2:expr, $test_input:expr) => {
+    ($day:ident, $answer1:expr, $answer2:expr, $test_input:expr$(,)?) => {
         #[cfg(test)]
         mod tests {
             use super::$day;

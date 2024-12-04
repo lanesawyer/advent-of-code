@@ -32,7 +32,7 @@ impl Day for Day1 {
 
         match result {
             Some(answer) => Ok(answer),
-            None => panic!("No answer found")
+            None => panic!("No answer found"),
         }
     }
 
