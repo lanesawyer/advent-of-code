@@ -154,7 +154,79 @@ impl Day for Day4 {
     }
 
     fn part_2(input: &str) -> Result<Answer, AdventError> {
-        let total = 2;
+        let character_grid = input_to_trimmed_grid(input);
+        let total = character_grid
+            .iter()
+            .enumerate()
+            .map(|(row_index, row)| {
+                row.iter()
+                    .enumerate()
+                    .filter_map(|(column_index, c)| {
+                        // Not an A, let's keep looking
+                        if *c != 'A' {
+                            return None;
+                        }
+
+                        // Two MAS in an X pattern need at least one row and column on each side
+                        if row_index < 1
+                            || column_index < 1
+                            || row_index > row.len() - 2
+                            || column_index > character_grid.len() - 2
+                        {
+                            return None;
+                        }
+
+                        let mut total_for_char = 0;
+
+                        let mut found_down_right = false;
+                        let mut found_down_left = false;
+                        let mut found_up_left = false;
+                        let mut found_up_right = false;
+
+                        // Grab all characters around the A
+                        let upper_left =
+                            *character_grid.get(row_index - 1)?.get(column_index - 1)?;
+                        // let up = *character_grid.get(row_index - 1)?.get(column_index)?;
+                        let upper_right =
+                            *character_grid.get(row_index - 1)?.get(column_index + 1)?;
+                        // let left = *character_grid.get(row_index)?.get(column_index - 1)?;
+                        // let right = *character_grid.get(row_index)?.get(column_index + 1)?;
+                        let lower_left =
+                            *character_grid.get(row_index + 1)?.get(column_index - 1)?;
+                        // let down = *character_grid.get(row_index + 1)?.get(column_index)?;
+                        let lower_right =
+                            *character_grid.get(row_index + 1)?.get(column_index + 1)?;
+
+                        // Check for MAS in all diagonals (cross MAS don't count)
+                        if upper_left == 'M' && lower_right == 'S' {
+                            found_down_right = true;
+                        }
+
+                        if upper_right == 'M' && lower_left == 'S' {
+                            found_down_left = true;
+                        }
+
+                        if lower_right == 'M' && upper_left == 'S' {
+                            found_up_left = true;
+                        }
+
+                        if lower_left == 'M' && upper_right == 'S' {
+                            found_up_right = true;
+                        }
+
+                        // Increment count for any x patterns
+                        if (found_down_right || found_up_left)
+                            && (found_down_left || found_up_right)
+                        {
+                            total_for_char += 1;
+                        }
+
+                        Some(total_for_char)
+                    })
+                    .sum::<u64>()
+            })
+            .sum::<u64>();
+
         Ok(total)
     }
 }
