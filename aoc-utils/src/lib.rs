@@ -44,6 +44,13 @@ pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> + '_ 
         .map(|line| line.to_string())
 }
 
+pub fn input_to_trimmed_grid(input: &str) -> Vec<Vec<char>> {
+    input_to_trimmed_lines(input)
+        .map(|line| line.trim().chars().collect())
+        .filter(|line: &Vec<char>| !line.is_empty())
+        .collect()
+}
+
 #[macro_export]
 macro_rules! run_day {
     ($day:ident, $day_num:expr) => {{
