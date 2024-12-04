@@ -186,14 +186,10 @@ impl Day for Day4 {
                         // Grab all characters around the A
                         let upper_left =
                             *character_grid.get(row_index - 1)?.get(column_index - 1)?;
-                        // let up = *character_grid.get(row_index - 1)?.get(column_index)?;
                         let upper_right =
                             *character_grid.get(row_index - 1)?.get(column_index + 1)?;
-                        // let left = *character_grid.get(row_index)?.get(column_index - 1)?;
-                        // let right = *character_grid.get(row_index)?.get(column_index + 1)?;
                         let lower_left =
                             *character_grid.get(row_index + 1)?.get(column_index - 1)?;
-                        // let down = *character_grid.get(row_index + 1)?.get(column_index)?;
                         let lower_right =
                             *character_grid.get(row_index + 1)?.get(column_index + 1)?;
 
