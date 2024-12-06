@@ -1,7 +1,7 @@
 use std::ops::RangeInclusive;
 use std::{fs, path::Path};
 
-use chrono::{Datelike, Local};
+use chrono::{Datelike, FixedOffset, Local, Utc};
 use clap::Parser;
 use dotenv::dotenv;
 use reqwest::{
@@ -117,9 +117,13 @@ fn get_puzzle_input_path(input_folder: &String, day: u32) -> String {
 }
 
 fn get_current_day() -> u32 {
-    Local::now().day()
+    // Advent of Code releases puzzles at midnight EST
+    let offset = FixedOffset::east_opt(3600 * -5).unwrap();
+    Utc::now().with_timezone(&offset).day()
 }
 
 fn get_current_year() -> i32 {
-    Local::now().year()
+    // Advent of Code releases puzzles at midnight EST
+    let offset = FixedOffset::east_opt(3600 * -5).unwrap();
+    Utc::now().with_timezone(&offset).year()
 }
