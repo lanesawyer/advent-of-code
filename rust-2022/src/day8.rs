@@ -1,4 +1,4 @@
-use aoc_utils::{test_day, AdventError, Answer, Day};
+use aoc_utils::{AdventError, Answer, Day, test_day};
 
 pub struct Day8;
 

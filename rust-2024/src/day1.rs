@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use aoc_utils::{input_to_trimmed_lines, test_day, AdventError, Answer, Day};
+use aoc_utils::{AdventError, Answer, Day, input_to_trimmed_lines, test_day};
 
 pub struct Day1;
 

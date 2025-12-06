@@ -1,4 +1,4 @@
-use aoc_utils::{read_input, AdventError, Day};
+use aoc_utils::{AdventError, Day, read_input};
 
 mod day1;
 mod day2;

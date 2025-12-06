@@ -1,4 +1,4 @@
-use aoc_utils::{test_day, AdventError, Answer, Day};
+use aoc_utils::{AdventError, Answer, Day, test_day};
 
 pub struct Day4;
 
@@ -19,11 +19,7 @@ impl Day for Day4 {
                     && first_elf_higher <= second_elf_higher)
                     || (second_elf_lower >= first_elf_lower
                         && second_elf_higher <= first_elf_higher);
-                if is_fully_contained {
-                    Some(1)
-                } else {
-                    None
-                }
+                if is_fully_contained { Some(1) } else { None }
             })
             .count();
         Ok(fully_contained as u64)

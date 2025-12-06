@@ -1,4 +1,4 @@
-use aoc_utils::{run_day, AdventError};
+use aoc_utils::{AdventError, run_day};
 
 use crate::{
     day1::Day1, day2::Day2, day3::Day3, day4::Day4, day5::Day5, day6::Day6, day8::Day8, day9::Day9,
