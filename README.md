@@ -2,8 +2,19 @@
 [Advent of Code](https://adventofcode.com/) is a yearly programming challenge that encourages people to solve problems using programming. This repository holds any attempts I make at completing the challenge!
 
 # Years
-## 2020, 2021, 2022, 2023, 2024: Rust
-I decided to do the 2020, 2021, 2022, 2023, and 2024 challenge using Rust. I don't use Rust professionally, so I want to flex my problem solving skills with it using Advent of Code.
+## 2020, 2021, 2022, 2023, 2024, 2025: Rust
+I decided to do the 2020, 2021, 2022, 2023, 2024, and 2025 challenge using Rust. I don't use Rust professionally, so I want to flex my problem solving skills with it using Advent of Code.
+
+### Starting a New Year
+Run the following commands from the root of the repository:
+```bash
+cargo new rust-20##
+```
+
+Navigate into the new directory and run this command to pull in the local `aoc-utils` crate
+```bash
+cargo add --path ../aoc-utils
+```
 
 ### Running the Project
 - Install the Rust tooling
