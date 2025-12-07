@@ -42,7 +42,7 @@ impl Day for Day1 {
 
                 if new_position == 0 {
                     (new_position, num_zeros + 1)
-                } else if new_position >= 0 && new_position < 100 {
+                } else if (0..100).contains(&new_position) {
                     (new_position, num_zeros)
                 } else {
                     panic!("Invalid position: {}", new_position);
@@ -99,7 +99,7 @@ impl Day for Day1 {
 
                 if new_position == 0 {
                     (new_position, num_zeros + 1 + intermediate_zero_pass)
-                } else if new_position >= 0 && new_position < 100 {
+                } else if (0..100).contains(&new_position) {
                     (new_position, num_zeros + intermediate_zero_pass)
                 } else {
                     panic!("Invalid position: {}", new_position);
@@ -113,7 +113,7 @@ impl Day for Day1 {
 test_day!(
     Day1,
     3,
-    6,
+    3121910778619,
     r#"
         L68
         L30
