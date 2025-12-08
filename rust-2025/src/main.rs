@@ -17,5 +17,7 @@ fn main() {
     // Day 2 part 2 is 6 minutes long :'(
     // run_day!(Day2, 2);
     run_day!(Day3, 3);
-    run_day!(Day4, 4);
+    // Day 3 is 18 seconds long :'(
+    // To fix, need to only check the paper spots near the one that was just removed instead of whole grid
+    // run_day!(Day4, 4);
 }

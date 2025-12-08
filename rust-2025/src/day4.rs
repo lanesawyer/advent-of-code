@@ -20,8 +20,27 @@ impl Day for Day4 {
         Ok(movable_papers)
     }
 
-    fn part_2(_input: &str) -> Result<Answer, AdventError> {
-        Ok(0)
+    fn part_2(input: &str) -> Result<Answer, AdventError> {
+        let mut grid = input_to_trimmed_grid(input);
+
+        let mut movable_papers = 0;
+        let mut removed_paper_this_iteration = true;
+
+        while removed_paper_this_iteration {
+            removed_paper_this_iteration = false;
+
+            for (row_index, row) in grid.clone().iter().enumerate() {
+                for (col_index, _spot) in row.iter().enumerate() {
+                    if can_paper_be_accessed_by_forklift(&grid, row_index, col_index) {
+                        movable_papers += 1;
+
+                        removed_paper_this_iteration = true;
+                        grid[row_index][col_index] = 'x';
+                    }
+                }
+            }
+        }
+        Ok(movable_papers)
     }
 }
 
@@ -57,17 +76,11 @@ fn can_paper_be_accessed_by_forklift(
         let char_to_check_y = grid.get(row_index_to_check as usize);
         let char_to_check = char_to_check_y.and_then(|row| row.get(col_index_to_check as usize));
 
-        println!(
-            "  Checking direction ({}, {}): {:?}",
-            d_row, d_col, char_to_check
-        );
-
         if let Some(&'@') = char_to_check {
             paper_neighbors += 1;
         }
     }
 
-    println!("  paper neighbors: {}", paper_neighbors);
     paper_neighbors <= 3
 }
 
