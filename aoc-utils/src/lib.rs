@@ -52,10 +52,27 @@ pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> {
         .map(|line| line.to_string())
 }
 
+fn into_chars(line: String) -> Vec<char> {
+    line.trim().chars().collect()
+}
+
 pub fn input_to_trimmed_grid(input: &str) -> Vec<Vec<char>> {
     input_to_trimmed_lines(input)
-        .map(|line| line.trim().chars().collect())
+        .map(into_chars)
         .filter(|line: &Vec<char>| !line.is_empty())
+        .collect()
+}
+
+fn into_strings_by_whitespace(line: String) -> Vec<String> {
+    line.split_whitespace()
+        .map(|s| s.to_string())
+        .collect()
+}
+
+pub fn input_to_grid_by_whitespace(input: &str) -> Vec<Vec<String>> {
+    input_to_trimmed_lines(input)
+        .map(into_strings_by_whitespace)
+        .filter(|line: &Vec<String>| !line.is_empty())
         .collect()
 }
 

@@ -1,7 +1,7 @@
 use std::ops::RangeInclusive;
 use std::{fs, path::Path};
 
-use chrono::{Datelike, FixedOffset, Local, Utc};
+use chrono::{Datelike, FixedOffset, Utc};
 use clap::Parser;
 use dotenv::dotenv;
 use reqwest::{
