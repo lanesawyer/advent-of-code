@@ -1,4 +1,4 @@
-use std::num::ParseIntError;
+use std::{num::ParseIntError, ops::{Range, RangeInclusive}};
 
 pub type Answer = u64;
 
@@ -11,6 +11,7 @@ pub trait Day {
 pub enum AdventError {
     ParseInt(ParseIntError),
     IoError(std::io::Error),
+    InvalidFormat(&'static str),
 }
 
 impl From<ParseIntError> for AdventError {
@@ -36,10 +37,17 @@ pub fn read_input(day: u8) -> Result<String, AdventError> {
 }
 
 /// Turns an input string into a iterator with trimmed lines
-pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> + '_ {
+/// Does not filter out empty lines
+pub fn trimmed_input_to_lines(input: &str) -> impl Iterator<Item = &str> {
     input
         .lines()
         .map(|line| line.trim())
+}
+
+/// Turns an input string into a iterator with trimmed lines
+/// Filters out empty lines
+pub fn input_to_trimmed_lines(input: &str) -> impl Iterator<Item = String> {
+    trimmed_input_to_lines(input)
         .filter(|line| !line.is_empty())
         .map(|line| line.to_string())
 }
@@ -50,6 +58,31 @@ pub fn input_to_trimmed_grid(input: &str) -> Vec<Vec<char>> {
         .filter(|line: &Vec<char>| !line.is_empty())
         .collect()
 }
+
+// Turns a string like "5-10" into a RangeInclusive<u64>
+pub fn parse_range_inclusive(s: &str) -> Result<RangeInclusive<u64>, AdventError> {
+    let (start_str, end_str) = s
+        .split_once('-')
+        .ok_or(AdventError::InvalidFormat("Missing '-' separator"))?;
+
+    let start = start_str.parse()?;
+    let end = end_str.parse()?;
+
+    Ok(start..=end)
+}
+
+// Turns a string like "5-10" into a Range<u64>
+pub fn parse_range(s: &str) -> Result<Range<u64>, AdventError> {
+    let (start_str, end_str) = s
+        .split_once('-')
+        .ok_or(AdventError::InvalidFormat("Missing '-' separator"))?;
+
+    let start = start_str.parse()?;
+    let end = end_str.parse()?;
+
+    Ok(start..end)
+}
+
 
 #[macro_export]
 macro_rules! run_day {

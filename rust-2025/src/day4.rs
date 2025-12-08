@@ -45,7 +45,7 @@ impl Day for Day4 {
 }
 
 fn can_paper_be_accessed_by_forklift(
-    grid: &Vec<Vec<char>>,
+    grid: &[Vec<char>],
     row_index: usize,
     col_index: usize,
 ) -> bool {
