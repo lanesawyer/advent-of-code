@@ -113,7 +113,7 @@ impl Day for Day1 {
 test_day!(
     Day1,
     3,
-    3121910778619,
+    6,
     r#"
         L68
         L30
